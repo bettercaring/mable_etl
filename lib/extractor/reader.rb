@@ -8,14 +8,14 @@ module MableEtl
     class Reader
       # file_type, format & db model name
       # handle multiple file locations & formats
-      attr_accessor :file
+      attr_accessor :file_path
 
-      def initialize(file)
-        @file = file
+      def initialize(file_path)
+        @file_path = file_path
       end
 
       def read_csv
-        CSV.read(File.path(@file))
+        CSV.read(File.path(@file_path))
       end
     end
   end
