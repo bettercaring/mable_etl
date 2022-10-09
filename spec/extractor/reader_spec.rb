@@ -1,10 +1,12 @@
 # frozen_string_literal: true
+require 'spec_helper'
+require 'extractor/reader'
 
-RSpec.describe MableEtl::Reader do
-  let(:subject) { described_class.new }
+RSpec.describe MableEtl::Extractor::Reader do
+  let(:subject) { described_class.new(file) }
+  let(:file) { 'spec/fixtures/files/test.csv' }
 
   it 'reads a csv file' do
-    binding.pry
-    expect(subject.reader).to eq([["Stacey ", "1"], ["Matt", "2"], ["Kim", "3"], ["Sameera", "4"]])
+    expect(subject.read_csv).to eq([["Mable", "1"], ["better_caring", "2"]])
   end
 end
