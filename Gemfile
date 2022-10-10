@@ -13,8 +13,6 @@ gem 'rake', '~> 13.0'
 
 gem 'rspec', '~> 3.0'
 
-gem 'aws-sdk-s3', '~> 1'
-
 # code quality gems
 group do
   gem 'rubocop-mable', git: 'https://github.com/bettercaring/rubocop-mable.git', require: false

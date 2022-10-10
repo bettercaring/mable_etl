@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'extractor/reader'
+require 'extractors/csv'
 
-RSpec.describe MableEtl::Extractor::Reader do
+RSpec.describe MableEtl::Extractors::Csv do
   let(:subject) { described_class.new(file) }
   let(:file) { 'spec/fixtures/files/test.csv' }
 

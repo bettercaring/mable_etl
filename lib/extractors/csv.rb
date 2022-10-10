@@ -4,8 +4,8 @@ require 'pry'
 require 'csv'
 
 module MableEtl
-  class Extractor
-    class Reader
+  class Extractors
+    class Csv
       # file_type, format & db model name
       # handle multiple file locations & formats
       attr_accessor :file_path
