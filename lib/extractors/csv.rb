@@ -5,7 +5,7 @@ require 'csv'
 
 module MableEtl
   class Extractors
-    class Csv
+    class CSV
       # file_type, format & db model name
       # handle multiple file locations & formats
       attr_accessor :file_path
@@ -14,8 +14,8 @@ module MableEtl
         @file_path = file_path
       end
 
-      def read_csv
-        CSV.read(File.path(@file_path))
+      def read
+        ::CSV.read(File.path(@file_path))
       end
     end
   end
