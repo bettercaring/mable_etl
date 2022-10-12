@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'mable_etl/configuration'
+require 'mable_etl/configuration/aws_s3'
 
-RSpec.describe MableEtl::Configuration do
+RSpec.describe MableEtl::Configuration::AwsS3 do
   before do
     MableEtl.configure do |config|
       config.aws_s3_region = 'region'
