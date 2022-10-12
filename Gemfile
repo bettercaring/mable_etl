@@ -1,13 +1,17 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 # Specify your gem's dependencies in mable_etl.gemspec
 gemspec
 
-gem "rake", "~> 13.0"
+group :development, :test do
+  gem 'pry', '~> 0.14.1'
+end
 
-gem "rspec", "~> 3.0"
+gem 'rake', '~> 13.0'
+
+gem 'rspec', '~> 3.0'
 
 # code quality gems
 group do
@@ -15,4 +19,3 @@ group do
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
 end
-
