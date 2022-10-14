@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'mable_etl/version'
-require 'mable_etl/configuration/aws_s3'
+require 'mable_etl/configuration'
 require 'pry'
 
 module MableEtl
@@ -10,11 +10,11 @@ module MableEtl
   end
 
   def self.configuration
-    @configuration ||= Configuration::AwsS3.new
+    @configuration ||= Configuration.new
   end
 
   def self.reset
-    @configuration = Configuration::AwsS3.new
+    @configuration = Configuration.new
   end
 
   def self.configure
