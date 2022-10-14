@@ -9,6 +9,8 @@ RSpec.describe MableEtl::Configuration do
       config.aws_s3_region = 'region'
       config.aws_access_key_id = 'aws access key'
       config.aws_secret_access_key = 'aws secret'
+      config.db_table_name = 'database table name'
+      config.db_column_names = 'database column names'
     end
   end
 
@@ -23,6 +25,14 @@ RSpec.describe MableEtl::Configuration do
 
     it 'returns the correct secret' do
       expect(MableEtl.configuration.aws_secret_access_key).to eq('aws secret')
+    end
+
+    it 'returns the correct database table' do
+      expect(MableEtl.configuration.db_table_name).to eq('database table name')
+    end
+
+    it 'returns the correct database column names' do
+      expect(MableEtl.configuration.db_column_names).to eq('database column names')
     end
   end
 
@@ -41,6 +51,14 @@ RSpec.describe MableEtl::Configuration do
 
     it 'raises a configuration error for personal_key' do
       expect { MableEtl.configuration.aws_secret_access_key }.to raise_error(MableEtl::Errors::Configuration)
+    end
+
+    it 'raises a configuration error for database table' do
+      expect { MableEtl.configuration.db_table_name }.to raise_error(MableEtl::Errors::Configuration)
+    end
+
+    it 'raises a configuration error for database column names' do
+      expect { MableEtl.configuration.db_column_names }.to raise_error(MableEtl::Errors::Configuration)
     end
   end
 end
