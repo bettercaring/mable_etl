@@ -6,18 +6,18 @@ module MableEtl
   class Loader
     class MableDatabase
         #psuedocode for loader
-      attr_accessor :table_name, :table_columns
+      attr_accessor :data
 
-      def initialize(table_name)
-        @table_name = table_name
-        @table_columns = table_columns
+      def initialize(data)
+        @table_name = config.db_table_name
+        @data = data
       end
 
       def load
         # result = JobDigest.insert_all(data)
         # puts result.inspect
         # puts JobDigest.count
-        JobDigest.insert_all(table_columns)
+        table_name.insert_all(data)
       end
     end
   end
