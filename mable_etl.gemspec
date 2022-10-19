@@ -38,4 +38,11 @@ Gem::Specification.new do |spec|
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
+
+  spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'rails'
+  spec.add_development_dependency 'factory_bot'
+  spec.add_development_dependency 'factory_bot_rails'
+  spec.add_development_dependency 'rspec-rails'
+  spec.add_development_dependency 'sqlite3'
 end
