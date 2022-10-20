@@ -4,7 +4,7 @@ require 'pry'
 
 module MableEtl
   class Loaders
-    class TableLoader
+    class ActiveRecordLoader
       attr_accessor :data
 
       def initialize(data)

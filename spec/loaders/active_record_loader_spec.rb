@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'loaders/table_loader'
+require 'loaders/active_record_loader'
 
-RSpec.describe MableEtl::Loaders::TableLoader do
-  subject(:table_loader) { described_class.new(data) }
+RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
+  subject(:active_record_loader) { described_class.new(data) }
   let(:table_name) { User }
   let!(:number) { table_name.count + 2 }
   let(:data) do
@@ -21,7 +21,7 @@ RSpec.describe MableEtl::Loaders::TableLoader do
 
   describe '#load' do
     it 'adds the data to the table' do
-      table_loader.load
+      active_record_loader.load
       expect(User.count).to eq(number)
     end
   end
