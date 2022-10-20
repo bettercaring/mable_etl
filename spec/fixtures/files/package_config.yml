@@ -1,0 +1,7 @@
+- users:
+  extractor: 
+    type: 'Csv'
+    location: './test.csv'
+  loader: 
+    type: active_record
+    name: 'User'

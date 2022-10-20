@@ -7,8 +7,8 @@ module MableEtl
     class ActiveRecordLoader
       attr_accessor :data
 
-      def initialize(data)
-        @table_name = MableEtl.configuration.db_table_name.constantize
+      def initialize(config, data)
+        @table_name = config.name.constantize
         @data = data
       end
 
