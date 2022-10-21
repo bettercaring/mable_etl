@@ -15,7 +15,7 @@ module MableEtl
       end
 
       def read
-        ::CSV.read(File.path(@file_path))
+        ::CSV.parse(File.read(@file_path), headers: true).map(&:to_h)
       end
     end
   end
