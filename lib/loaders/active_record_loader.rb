@@ -5,15 +5,15 @@ require 'pry'
 module MableEtl
   class Loaders
     class ActiveRecordLoader
-      attr_accessor :data, :config_table_name
+      attr_accessor :params
 
-      def initialize(data, config_table_name)
-        @table_name = config_table_name
-        @data = data
+      def initialize(params)
+        @table_name = params[:config_table_name]
+        @data = params[:data]
       end
 
       def load
-        @table_name.insert_all(data)
+        @table_name.insert_all(@data)
       end
     end
   end
