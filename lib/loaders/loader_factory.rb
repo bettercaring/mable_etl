@@ -11,7 +11,6 @@ module MableEtl
       # sends the data to the right class
 
       def self.for(data, config_loader, loader_type)
-        binding.pry
         class_eval("MableEtl::Loaders::#{loader_type}").new(data, config_loader).load
       end
     end
