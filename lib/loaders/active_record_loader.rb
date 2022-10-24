@@ -5,10 +5,10 @@ require 'pry'
 module MableEtl
   class Loaders
     class ActiveRecordLoader
-      attr_accessor :data
+      attr_accessor :data, :config_table_name
 
-      def initialize(data)
-        @table_name = MableEtl.configuration.db_table_name.constantize
+      def initialize(data, config_table_name)
+        @table_name = config_table_name
         @data = data
       end
 

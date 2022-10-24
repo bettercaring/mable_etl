@@ -4,19 +4,12 @@ require 'spec_helper'
 require 'loaders/active_record_loader'
 
 RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
-  subject(:active_record_loader) { described_class.new(data) }
-  let(:table_name) { User }
-  # let!(:number) { table_name.count + 2 }
+  subject(:active_record_loader) { described_class.new(data, config_table_name) }
+  let(:config_table_name) { User }
   let(:data) do
     [{ id: 1, name: 'name', email: 'chicken@gmail.com' },
      { id: 1, name: 'gerald', email: 'chicken@gmail.com' },
      { id: 2, name: 'hello', email: 'hello@gmail.com' }]
-  end
-
-  before do
-    MableEtl.configure do |config|
-      config.db_table_name = 'User'
-    end
   end
 
   describe '#load' do
