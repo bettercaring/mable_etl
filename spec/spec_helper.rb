@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "mable_etl"
-require 'support/database_cleaner'
+require 'database_cleaner/active_record'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
