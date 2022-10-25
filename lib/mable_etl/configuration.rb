@@ -16,7 +16,7 @@ module MableEtl
     # - AWS S3 Region
     # - AWS Access Key id
     # - AWS secret access key
-    # - Database table name
+    # - Database model name
     # - Database column names
     #
     # The gem will raise a `Errors::Configuration` if you fail to provide these keys.
@@ -28,7 +28,7 @@ module MableEtl
     #   config.aws_s3_region = ''
     #   config.aws_access_key_id = ''
     #   config.aws_secret_access_key = ''
-    #   config.db_table_name = ''
+    #   config.db_model_name = ''
     #   config.db_column_names = ''
     # end
     # ```
@@ -41,20 +41,20 @@ module MableEtl
     # MableEtl.configuration.aws_s3_region
     # MableEtl.configuration.aws_access_key_id
     # MableEtl.configuration.aws_secret_access_key
-    # MableEtl.configuration.db_table_name
+    # MableEtl.configuration.db_model_name
     # MableEtl.configuration.db_column_names
     # ```
     # # Resetting configuration
     #
     # To reset, simply call `MableEtl.reset`.
     #
-    attr_writer :aws_s3_region, :aws_access_key_id, :aws_secret_access_key, :db_table_name, :db_column_names
+    attr_writer :aws_s3_region, :aws_access_key_id, :aws_secret_access_key, :db_model_name, :db_column_names
 
     def initialize
       @aws_s3_region = nil
       @aws_access_key_id = nil
       @aws_secret_access_key = nil
-      @db_table_name = nil
+      @db_model_name = nil
       @db_column_names = nil
     end
 
@@ -85,13 +85,13 @@ module MableEtl
       @aws_secret_access_key
     end
 
-    def db_table_name
-      unless @db_table_name
+    def db_model_name
+      unless @db_model_name
         raise MableEtl::Errors::Configuration,
-              'MableEtl database table name missing! See the documentation for configuration settings.'
+              'MableEtl database model name missing! See the documentation for configuration settings.'
       end
 
-      @db_table_name
+      @db_model_name
     end
 
     def db_column_names

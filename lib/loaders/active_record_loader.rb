@@ -8,7 +8,6 @@ module MableEtl
       attr_accessor :params
 
       def initialize(params)
-        # will need to chat about the config table name changing to config model name
         @active_record_model_name = params[:config_model_name]
         @data = params[:data]
       end
