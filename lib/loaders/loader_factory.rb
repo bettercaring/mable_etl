@@ -11,6 +11,8 @@ module MableEtl
     class LoaderFactory
 
       def self.for(params)
+        return 'loader_type is missing' if params[:loader_type].nil?
+        
         class_eval("MableEtl::Loaders::#{params[:loader_type]}", __FILE__, __LINE__).new(params).load
       end
     end
