@@ -2,11 +2,11 @@
 
 require 'pry'
 require 'csv'
-require 'mable_etl/errors/extractors/csv'
+require 'mable_etl/errors/extractors/local_extractor'
 
 module MableEtl
   class Extractors
-    class CSV
+    class LocalExtractor
       attr_accessor :params
 
       def initialize(params)
@@ -21,7 +21,7 @@ module MableEtl
       end
 
       def validation(params)
-        raise MableEtl::Errors::Extractors::CSV, 'file is missing' if params[:file_path].nil?
+        raise MableEtl::Errors::Extractors::LocalExtractor, 'file is missing' if params[:file_path].nil?
       end
     end
   end

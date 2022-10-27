@@ -2,7 +2,7 @@
 
 require 'pry'
 require 'mable_etl/errors/extractors/extractor_factory'
-require 'extractors/csv'
+require 'extractors/local_extractor'
 
 # ExtractorFactory.for(params).load
 # The object contains the class, data and config for loader

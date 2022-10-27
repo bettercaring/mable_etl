@@ -5,17 +5,17 @@ RSpec.describe MableEtl::Extractors::ExtractorFactory do
   subject(:extractor_factory) { described_class.for(params) }
   let(:params) do
     {
-      extractor_type: 'CSV',
+      extractor_type: 'LocalExtractor',
       file_type: 'spec/fixtures/files/test.csv'
     }
   end
 
-  let(:csv) { instance_double(MableEtl::Extractors::CSV) }
+  let(:local_extractor) { instance_double(MableEtl::Extractors::LocalExtractor) }
   let(:extractor_result) { true }
 
   before do
-    allow(MableEtl::Extractors::CSV).to receive(:new).and_return(csv)
-    allow(csv).to receive(:extract).and_return(extractor_result)
+    allow(MableEtl::Extractors::LocalExtractor).to receive(:new).and_return(local_extractor)
+    allow(local_extractor).to receive(:extract).and_return(extractor_result)
   end
 
   describe 'extractor factory' do
