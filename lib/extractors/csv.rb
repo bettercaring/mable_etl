@@ -14,7 +14,7 @@ module MableEtl
         @file_path = file_path
       end
 
-      def read
+      def extract
         # files with no headers
         # an error as well
         ::CSV.parse(File.read(@file_path), headers: true).map(&:to_h)
