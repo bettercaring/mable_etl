@@ -13,6 +13,7 @@ RSpec.describe MableEtl::Loaders::LoaderFactory do
        { id: 2, name: 'hello', email: 'hello@gmail.com' }]
     }
   end
+
   let(:active_record_loader) { instance_double(MableEtl::Loaders::ActiveRecordLoader) }
   let(:load_result) { true }
 
@@ -24,6 +25,15 @@ RSpec.describe MableEtl::Loaders::LoaderFactory do
   describe 'loader factory' do
     it 'sends data to the correct loader' do
       expect(loader_factory).to eq(load_result)
+    end
+
+    context 'error' do
+      before do
+        params[:loader_type] = nil
+      end
+      it 'raises error when loader_type nil' do
+        expect { loader_factory }.to raise_error(MableEtl::Errors::Loaders::LoaderFactory)
+      end
     end
   end
 end
