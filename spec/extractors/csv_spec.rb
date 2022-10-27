@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'extractors/csv'
 
@@ -7,6 +8,8 @@ RSpec.describe MableEtl::Extractors::CSV do
   let(:file) { 'spec/fixtures/files/test.csv' }
 
   it 'reads a csv file' do
-    expect(subject.read).to eq([["Mable", "1"], ["better_caring", "2"]])
+    subject.read
+    expect(subject.read).to eq([{ 'name' => 'Mable', ' number' => '1' },
+                                { 'name' => 'better_caring', ' number' => '2' }])
   end
 end
