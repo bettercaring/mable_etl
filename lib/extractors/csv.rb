@@ -2,22 +2,26 @@
 
 require 'pry'
 require 'csv'
+require 'mable_etl/errors/extractors/csv'
 
 module MableEtl
   class Extractors
     class CSV
-      # file_type, format & db model name
-      # handle multiple file locations & formats
-      attr_accessor :file_path
+      attr_accessor :params
 
-      def initialize(file_path)
-        @file_path = file_path
+      def initialize(params)
+        validation(params)
+
+        @file_path = params[:file_path]
       end
 
       def extract
         # files with no headers
-        # an error as well
         ::CSV.parse(File.read(@file_path), headers: true).map(&:to_h)
+      end
+
+      def validation(params)
+        raise MableEtl::Errors::Extractors::CSV, 'file is missing' if params[:file_path].nil?
       end
     end
   end
