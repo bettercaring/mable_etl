@@ -7,9 +7,11 @@ RSpec.describe MableEtl::Extractors::LocalExtractor do
   let(:subject) { described_class.new(params) }
   let(:params) do
     {
-      file_path: 'spec/fixtures/files/test.csv'
+      file_path: file_path
     }
   end
+
+  let(:file_path) { 'spec/fixtures/files/test.csv' }
 
   describe '#initialize' do
     context 'with valid params' do
@@ -20,11 +22,18 @@ RSpec.describe MableEtl::Extractors::LocalExtractor do
 
     context 'with invalid params' do
       context 'when config_model_name is nil' do
-        before do
-          params[:file_path] = nil
-        end
+        let(:file_path) { nil }
+
         it 'raises error' do
-          expect { subject }.to raise_error(MableEtl::Errors::Extractors::LocalExtractor)
+          expect { subject }.to raise_error(MableEtl::Errors::Extractors::LocalExtractor, { file_path: ['must be a string'] }.to_s )
+        end
+      end
+
+      context "when file doesn't exist" do
+        let(:file_path) { '/bad_file_path/file.csv' }
+
+        it 'raises error' do
+          expect { subject }.to raise_error(MableEtl::Errors::Extractors::LocalExtractor, { file_path: ['file must exist'] }.to_s )
         end
       end
     end

@@ -3,14 +3,15 @@
 require 'pry'
 require 'csv'
 require 'mable_etl/errors/extractors/local_extractor'
+require_relative '../contracts/local_extractor_contract'
 
 module MableEtl
   class Extractors
     class LocalExtractor
-      attr_accessor :params
-
       def initialize(params)
-        validation(params)
+        @params = params
+
+        validation
 
         @file_path = params[:file_path]
       end
@@ -20,8 +21,16 @@ module MableEtl
         ::CSV.parse(File.read(@file_path), headers: true).map(&:to_h)
       end
 
-      def validation(params)
-        raise MableEtl::Errors::Extractors::LocalExtractor, 'file is missing' if params[:file_path].nil?
+      private
+
+      attr_reader :params, :contract_result
+
+      def validation
+        contract_result = MableEtl::Contracts::LocalExtractorContract.new.call(params)
+
+        return if contract_result.success?
+
+        raise MableEtl::Errors::Extractors::LocalExtractor, contract_result.errors.to_h.to_s
       end
     end
   end
