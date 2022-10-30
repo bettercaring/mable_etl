@@ -16,7 +16,8 @@ module MableEtl
       end
 
       def extract
-        #extract files from S3
+        # extract files from S3
+        FileUtils.cp(S3_path, 'lib/temp/')
       end
 
       def validation(params)
