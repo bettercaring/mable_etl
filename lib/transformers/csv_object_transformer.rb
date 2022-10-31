@@ -1,24 +1,25 @@
 # frozen_string_literal: true
 
 require 'pry'
+require 'csv'
 
 module MableEtl
   class Transformers
-    class MapTransformer
+    class CsvObjectTransformer
       attr_accessor :params
 
       def initialize(params)
         validations(params)
 
-        @data = params[:data]
+        @file_path = params[:file_path]
       end
 
       def transform
-        @data.map(&:to_h)
+        ::CSV.parse(File.read(@file_path), headers: true)
       end
 
       def validations(params)
-        raise MableEtl::Errors::Transformers::MapTransformer, 'data is missing' if params[:data].nil?
+        raise MableEtl::Errors::Transformers::CsvObjectTransformer, 'data is missing' if params[:file_path].nil?
       end
     end
   end

@@ -3,6 +3,7 @@
 require 'pry'
 require 'mable_etl/errors/transformers/transformer_factory'
 require 'transformers/map_transformer'
+require 'transformers/csv_object_transformer'
 
 # TransformerFactory.for(params).transform
 # The object contains the class, data and config for loader
