@@ -1,36 +1,39 @@
 # frozen_string_literal: true
-
+require 'aws-sdk-s3'
 require 'pry'
 require 'csv'
-# require 'mable_etl/errors/extractors/S3_extractor'
+require_relative '../contracts/s3_extractor_contract'
+require 'mable_etl/errors/extractors/s3_extractor'
 
 module MableEtl
   class Extractors
     class S3Extractor
-      attr_accessor :params
 
       def initialize(params)
-        validation(params)
-        @S3_credentials = params[:S3_credentials]
-        @S3_region = params[:S3_region]
-        @S3_path = params[:S3_path]
-        @S3_bucket = params[:S3_bucket]
+        @params = params
+
+        validation
+
+        @s3_credentials = params[:s3_credentials]
+        @s3_path = params[:s3_path]
+        @s3_bucket = params[:s3_bucket]
       end
 
       def extract
-        s3 = Aws::S3::Client.new(region: params[:S3_region],
-                credentials: params[:S3_credentials])
-        resp = s3.get_object({ bucket: 'mable.production.inf-datascience.ds-data-lake-acquisition', key: 's3://mable.production.inf-datascience.ds-data-lake-acquisition/svc_job_digests_2022-10-28.csv' }, target: 'lib/temp/')
-        #key: object-key
+        s3 = Aws::S3::Client.new(access_key_id: @s3_credentials[:access_key_id], secret_access_key: @s3_credentials[:secret_access_key])
+        s3.get_object({ response_target: 'lib/temp/job_digest_temp.csv', bucket: @s3_bucket, key: @s3_path })
       end
 
-      #       def extract
-      #         # extract files from S3
-      #         FileUtils.cp(S3_path, 'lib/temp/')
-      #       end
+      private
 
-      def validation(params)
-        raise MableEtl::Errors::Extractors::S3Extractor, 'path is missing' if params[:S3_path].nil?
+      attr_reader :params, :contract_result
+
+      def validation
+        contract_result = MableEtl::Contracts::S3ExtractorContract.new.call(params)
+
+        return if contract_result.success?
+
+        raise MableEtl::Errors::Extractors::S3Extractor, contract_result.errors.to_h.to_s
       end
     end
   end

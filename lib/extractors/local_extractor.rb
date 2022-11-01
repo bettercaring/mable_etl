@@ -18,6 +18,7 @@ module MableEtl
 
       def extract
         # in future write code for files with no headers
+        # FileUtils.cp(@file_path, 'lib/temp/')
         ::CSV.parse(File.read(@file_path), headers: true).map(&:to_h)
       end
 
