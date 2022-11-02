@@ -32,7 +32,7 @@ RSpec.describe MableEtl::Loaders::LoaderFactory do
         params[:loader_type] = nil
       end
       it 'raises error when loader_type nil' do
-        expect { loader_factory }.to raise_error(MableEtl::Errors::Loaders::LoaderFactory)
+        expect { loader_factory }.to raise_error(MableEtl::Errors::Loaders::LoaderFactory, { loader_type: ["must be filled"] }.to_s)
       end
     end
   end

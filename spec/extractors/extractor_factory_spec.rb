@@ -28,7 +28,9 @@ RSpec.describe MableEtl::Extractors::ExtractorFactory do
         params[:extractor_type] = nil
       end
       it 'raises error when extractor_type nil' do
-        expect { extractor_factory }.to raise_error(MableEtl::Errors::Extractors::ExtractorFactory)
+        expect do
+          extractor_factory
+        end.to raise_error(MableEtl::Errors::Extractors::ExtractorFactory, { extractor_type: ['must be filled'] }.to_s)
       end
     end
   end
