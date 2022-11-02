@@ -24,7 +24,7 @@ RSpec.describe MableEtl::Transformers::MapTransformer do
           params[:data] = nil
         end
         it 'raises error' do
-          expect { map_transformer }.to raise_error(MableEtl::Errors::Transformers::MapTransformer)
+          expect { map_transformer }.to raise_error(MableEtl::Errors::Transformers::MapTransformer, { data: ['must be filled'] }.to_s)
         end
       end
     end

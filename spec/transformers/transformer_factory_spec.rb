@@ -31,7 +31,7 @@ RSpec.describe MableEtl::Transformers::TransformerFactory do
         params[:transformer_type] = nil
       end
       it 'raises error when transformer_type nil' do
-        expect { transformer_factory }.to raise_error(MableEtl::Errors::Transformers::TransformerFactory)
+        expect { transformer_factory }.to raise_error(MableEtl::Errors::Transformers::TransformerFactory, { transformer_type: ["must be filled"] }.to_s)
       end
     end
   end

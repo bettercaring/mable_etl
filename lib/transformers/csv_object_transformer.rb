@@ -2,14 +2,15 @@
 
 require 'pry'
 require 'csv'
+require_relative '../contracts/csv_object_transformer_contract'
 
 module MableEtl
   class Transformers
     class CsvObjectTransformer
-      attr_accessor :params
-
       def initialize(params)
-        validations(params)
+        @params = params
+
+        validation
 
         @file_path = params[:file_path]
       end
@@ -18,8 +19,14 @@ module MableEtl
         ::CSV.parse(File.read(@file_path), headers: true)
       end
 
-      def validations(params)
-        raise MableEtl::Errors::Transformers::CsvObjectTransformer, 'data is missing' if params[:file_path].nil?
+      attr_reader :params, :contract_result
+
+      def validation
+        contract_result = MableEtl::Contracts::CsvObjectTransformerContract.new.call(params)
+
+        return if contract_result.success?
+
+        raise MableEtl::Errors::Transformers::CsvObjectTransformer, contract_result.errors.to_h.to_s
       end
     end
   end

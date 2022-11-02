@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 require 'pry'
+require_relative '../contracts/map_transformer_contract'
 
 module MableEtl
   class Transformers
     class MapTransformer
-      attr_accessor :params
-
       def initialize(params)
-        validations(params)
+        @params = params
+
+        validation
 
         @data = params[:data]
       end
@@ -17,8 +18,16 @@ module MableEtl
         @data.map(&:to_h)
       end
 
-      def validations(params)
-        raise MableEtl::Errors::Transformers::MapTransformer, 'data is missing' if params[:data].nil?
+      private
+
+      attr_reader :params, :contract_result
+
+      def validation
+        contract_result = MableEtl::Contracts::MapTransformerContract.new.call(params)
+
+        return if contract_result.success?
+
+        raise MableEtl::Errors::Transformers::MapTransformer, contract_result.errors.to_h.to_s
       end
     end
   end

@@ -6,9 +6,10 @@ RSpec.describe MableEtl::Transformers::CsvObjectTransformer do
   subject(:csv_object_transformer) { described_class.new(params) }
   let(:params) do
     {
-      file_path: 'spec/fixtures/files/test.csv'
+      file_path: file_path
     }
   end
+  let(:file_path) { 'spec/fixtures/files/test.csv' }
 
   describe '#initialize' do
     context 'with valid params' do
@@ -23,7 +24,15 @@ RSpec.describe MableEtl::Transformers::CsvObjectTransformer do
           params[:file_path] = nil
         end
         it 'raises error' do
-          expect { csv_object_transformer }.to raise_error(MableEtl::Errors::Transformers::CsvObjectTransformer)
+          expect { csv_object_transformer }.to raise_error(MableEtl::Errors::Transformers::CsvObjectTransformer, { file_path: ['must be a string'] }.to_s)
+        end
+      end
+
+      context "when s3_path doesn't exist" do
+        let(:file_path) { '/bad_file_path/file.csv' }
+
+        it 'raises error' do  
+          expect { csv_object_transformer }.to raise_error(MableEtl::Errors::Transformers::CsvObjectTransformer, { file_path: ['file must exist'] }.to_s)
         end
       end
     end
