@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'pry'
+require_relative '../contracts/active_record_loader_contract'
 
 module MableEtl
   class Loaders
@@ -19,9 +20,11 @@ module MableEtl
       end
 
       def validations(params)
-        raise MableEtl::Errors::Loaders::ActiveRecordLoader, 'config_model_name is missing' if params[:config_model_name].nil?
+        contract_result = MableEtl::Contracts::ActiveRecordLoaderContract.new.call(params)
 
-        raise MableEtl::Errors::Loaders::ActiveRecordLoader, 'data is missing' if params[:data].nil?
+        return if contract_result.success?
+
+        raise MableEtl::Errors::Loaders::ActiveRecordLoader, contract_result.errors.to_h.to_s
       end
     end
   end

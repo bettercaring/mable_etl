@@ -29,7 +29,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
           params[:config_model_name] = nil
         end
         it 'raises error' do
-          expect { active_record_loader }.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader)
+          expect { active_record_loader }.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader, { config_model_name: ['must be a string'] }.to_s )
         end
       end
 
@@ -38,7 +38,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
           params[:data] = nil
         end
         it 'raises error' do
-          expect { active_record_loader }.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader)
+          expect { active_record_loader }.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader, { data: ['must be an array'] }.to_s )
         end
       end
     end
