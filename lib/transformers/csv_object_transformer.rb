@@ -16,6 +16,7 @@ module MableEtl
       end
 
       def transform
+        # in future write code for files with no headers
         ::CSV.parse(File.read(@file_path), headers: true)
       end
 
