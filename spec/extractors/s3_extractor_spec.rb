@@ -9,7 +9,8 @@ RSpec.describe MableEtl::Extractors::S3Extractor do
     {
       s3_credentials: s3_credentials,
       s3_bucket: s3_bucket,
-      s3_path: s3_path
+      s3_path: s3_path,
+      temp_file: 'temp/job_digest_temp.csv'
     }
   end
   let(:s3_credentials) { { access_key_id: 'access_key', secret_access_key: 'secret_access_key' } }

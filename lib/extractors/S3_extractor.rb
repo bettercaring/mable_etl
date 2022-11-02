@@ -17,11 +17,12 @@ module MableEtl
         @s3_credentials = params[:s3_credentials]
         @s3_path = params[:s3_path]
         @s3_bucket = params[:s3_bucket]
+        @temp_file = params[:temp_file]
       end
 
       def extract
         s3 = Aws::S3::Client.new(access_key_id: @s3_credentials[:access_key_id], secret_access_key: @s3_credentials[:secret_access_key])
-        s3.get_object({ response_target: 'lib/temp/job_digest_temp.csv', bucket: @s3_bucket, key: @s3_path })
+        s3.get_object({ response_target: @temp_file, bucket: @s3_bucket, key: @s3_path })
       end
 
       private
