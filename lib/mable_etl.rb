@@ -2,6 +2,8 @@
 
 require_relative 'mable_etl/version'
 require 'mable_etl/configuration'
+Dir.glob(File.dirname(__dir__) + "/contracts/**/*.rb").each { |file| require file }
+
 require 'pry'
 
 module MableEtl
