@@ -2,29 +2,24 @@
 
 require 'pry'
 require_relative '../contracts/active_record_loader_contract'
+require_relative '../helpers/validation'
 
 module MableEtl
   class Loaders
     class ActiveRecordLoader
+      prepend Validation
       attr_accessor :params
 
-      def initialize(params)
-        validations(params)
+      validation_options contract_klass: MableEtl::Contracts::ActiveRecordLoaderContract,
+                         error_klass: MableEtl::Errors::Loaders::ActiveRecordLoader
 
+      def initialize(params)
         @active_record_model_name = params[:config_model_name].constantize
         @data = params[:data]
       end
 
       def load
         @active_record_model_name.insert_all(@data)
-      end
-
-      def validations(params)
-        contract_result = MableEtl::Contracts::ActiveRecordLoaderContract.new.call(params)
-
-        return if contract_result.success?
-
-        raise MableEtl::Errors::Loaders::ActiveRecordLoader, contract_result.errors.to_h.to_s
       end
     end
   end
