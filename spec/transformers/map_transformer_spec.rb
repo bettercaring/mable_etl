@@ -32,8 +32,8 @@ RSpec.describe MableEtl::Transformers::MapTransformer do
 
   describe '#transform' do
     it 'maps the data to a hash' do
-      expect(map_transformer.transform).to eq([{ 'name' => 'Mable', ' number' => '1' },
-                                               { 'name' => 'better_caring', ' number' => '2' }])
+      expect(map_transformer.transform).to eq([{ 'name' => 'Mable', 'id' => '1' },
+                                               { 'name' => 'better_caring', 'id' => '2' }])
     end
   end
 end

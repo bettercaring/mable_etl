@@ -6,9 +6,6 @@ require 'mable_etl/errors/extractors/extractor_factory'
 require 'extractors/local_extractor'
 require 'extractors/S3_extractor'
 
-# ExtractorFactory.for(params).extract
-# The object contains the class, file_path and config for extractor
-
 module MableEtl
   class Extractors
     class ExtractorFactory

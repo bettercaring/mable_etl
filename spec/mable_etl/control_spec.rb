@@ -17,9 +17,7 @@ RSpec.describe MableEtl::Control do
 
   describe '#process' do
     it 'is successful' do
-        binding.pry
-#       subject.process
-      expect(control.process).to eq(true)
+      expect(control.process).to eq('success')
     end
   end
 end

@@ -2,7 +2,6 @@ require 'pry'
 require 'extractors/local_extractor'
 require 'extractors/S3_extractor'
 require 'extractors/extractor_factory'
-# require 'mable_etl/errors/configuration'
 
 # send hash to controller, hash contains extractor_type (as well as params for file location and credentials if S3),
 # transformer_type in an array(also data from extractor),
@@ -17,17 +16,13 @@ module MableEtl
     end
 
     def process
-      # get source, figure out transformers from client and then loader
-      # all of these are from config
-      # transformer has an array of items one after the other
       extractor
 
       transformer
 
-      binding.pry
-      File.delete(params[:mable_etl_file_path]) if loader.persisted?
+      File.delete(params[:mable_etl_file_path]) unless loader.nil?
 
-      # delete file if loader is successful
+      'success'
     end
 
     def extractor

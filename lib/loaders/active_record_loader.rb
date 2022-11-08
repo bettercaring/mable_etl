@@ -16,7 +16,10 @@ module MableEtl
       end
 
       def load
-        binding.pry
+        unless @active_record_model_name.insert_all(@data)
+          raise MableEtl::Errors::Loaders::ActiveRecordLoader, 'Could not save'
+        end
+
         @active_record_model_name.insert_all(@data)
       end
 
