@@ -14,7 +14,7 @@ module MableEtl
       def self.for(params)
         validations(params)
 
-        class_eval("MableEtl::Loaders::#{params[:loader_type]}", __FILE__, __LINE__).new(params).load
+        class_eval("MableEtl::Loaders::#{params[:loader_type]}", __FILE__, __LINE__).new(params)
       end
 
       def self.validations(params)

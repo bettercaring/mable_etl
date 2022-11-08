@@ -15,7 +15,7 @@ module MableEtl
       def self.for(params)
         validations(params)
 
-        class_eval("MableEtl::Extractors::#{params[:extractor_type]}", __FILE__, __LINE__).new(params).extract
+        class_eval("MableEtl::Extractors::#{params[:extractor_type]}", __FILE__, __LINE__).new(params)
       end
 
       def self.validations(params)

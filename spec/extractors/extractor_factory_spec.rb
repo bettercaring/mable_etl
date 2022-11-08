@@ -11,16 +11,14 @@ RSpec.describe MableEtl::Extractors::ExtractorFactory do
   end
 
   let(:local_extractor) { instance_double(MableEtl::Extractors::LocalExtractor) }
-  let(:extractor_result) { true }
 
   before do
     allow(MableEtl::Extractors::LocalExtractor).to receive(:new).and_return(local_extractor)
-    allow(local_extractor).to receive(:extract).and_return(extractor_result)
   end
 
   describe 'extractor factory' do
     it 'sends data to the correct extractor' do
-      expect(extractor_factory).to eq(extractor_result)
+      expect(extractor_factory).to eq(local_extractor)
     end
 
     context 'error' do

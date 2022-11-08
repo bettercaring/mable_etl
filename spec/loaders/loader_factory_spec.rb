@@ -15,16 +15,14 @@ RSpec.describe MableEtl::Loaders::LoaderFactory do
   end
 
   let(:active_record_loader) { instance_double(MableEtl::Loaders::ActiveRecordLoader) }
-  let(:load_result) { true }
 
   before do
     allow(MableEtl::Loaders::ActiveRecordLoader).to receive(:new).and_return(active_record_loader)
-    allow(active_record_loader).to receive(:load).and_return(load_result)
   end
 
   describe 'loader factory' do
     it 'sends data to the correct loader' do
-      expect(loader_factory).to eq(load_result)
+      expect(loader_factory).to eq(active_record_loader)
     end
 
     context 'error' do

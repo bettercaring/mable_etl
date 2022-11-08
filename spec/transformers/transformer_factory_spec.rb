@@ -14,16 +14,14 @@ RSpec.describe MableEtl::Transformers::TransformerFactory do
   end
 
   let(:map_transformer) { instance_double(MableEtl::Transformers::MapTransformer) }
-  let(:transformer_result) { true }
 
   before do
     allow(MableEtl::Transformers::MapTransformer).to receive(:new).and_return(map_transformer)
-    allow(map_transformer).to receive(:transform).and_return(transformer_result)
   end
 
   describe 'transformer factory' do
     it 'sends data to the correct transformer' do
-      expect(transformer_factory).to eq(transformer_result)
+      expect(transformer_factory).to eq(map_transformer)
     end
 
     context 'error' do

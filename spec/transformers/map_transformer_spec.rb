@@ -7,7 +7,7 @@ RSpec.describe MableEtl::Transformers::MapTransformer do
   subject(:map_transformer) { described_class.new(params) }
   let(:params) do
     {
-      data: ::CSV.parse(File.read('spec/fixtures/files/test.csv'), headers: true)
+      mable_etl_data: ::CSV.parse(File.read('spec/fixtures/files/test.csv'), headers: true)
     }
   end
 
@@ -21,10 +21,10 @@ RSpec.describe MableEtl::Transformers::MapTransformer do
     context 'with invalid params' do
       context 'when data is nil' do
         before do
-          params[:data] = nil
+          params[:mable_etl_data] = nil
         end
         it 'raises error' do
-          expect { map_transformer }.to raise_error(MableEtl::Errors::Transformers::MapTransformer, { data: ['must be filled'] }.to_s)
+          expect { map_transformer }.to raise_error(MableEtl::Errors::Transformers::MapTransformer, { mable_etl_data: ['must be filled'] }.to_s)
         end
       end
     end

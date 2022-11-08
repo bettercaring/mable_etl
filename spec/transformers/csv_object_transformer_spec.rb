@@ -6,10 +6,10 @@ RSpec.describe MableEtl::Transformers::CsvObjectTransformer do
   subject(:csv_object_transformer) { described_class.new(params) }
   let(:params) do
     {
-      file_path: file_path
+      mable_etl_file_path: mable_etl_file_path
     }
   end
-  let(:file_path) { 'spec/fixtures/files/test.csv' }
+  let(:mable_etl_file_path) { 'spec/fixtures/files/test.csv' }
 
   describe '#initialize' do
     context 'with valid params' do
@@ -21,18 +21,18 @@ RSpec.describe MableEtl::Transformers::CsvObjectTransformer do
     context 'with invalid params' do
       context 'when data is nil' do
         before do
-          params[:file_path] = nil
+          params[:mable_etl_file_path] = nil
         end
         it 'raises error' do
-          expect { csv_object_transformer }.to raise_error(MableEtl::Errors::Transformers::CsvObjectTransformer, { file_path: ['must be a string'] }.to_s)
+          expect { csv_object_transformer }.to raise_error(MableEtl::Errors::Transformers::CsvObjectTransformer, { mable_etl_file_path: ['must be a string'] }.to_s)
         end
       end
 
       context "when s3_path doesn't exist" do
-        let(:file_path) { '/bad_file_path/file.csv' }
+        let(:mable_etl_file_path) { '/bad_file_path/file.csv' }
 
         it 'raises error' do  
-          expect { csv_object_transformer }.to raise_error(MableEtl::Errors::Transformers::CsvObjectTransformer, { file_path: ['file must exist'] }.to_s)
+          expect { csv_object_transformer }.to raise_error(MableEtl::Errors::Transformers::CsvObjectTransformer, { mable_etl_file_path: ['file must exist'] }.to_s)
         end
       end
     end
@@ -40,7 +40,7 @@ RSpec.describe MableEtl::Transformers::CsvObjectTransformer do
 
   describe '#transform' do
     it 'changes csv file to csv object' do
-      expect(csv_object_transformer.transform).to eq(CSV.parse(File.read(params[:file_path]), headers: true))
+      expect(csv_object_transformer.transform).to eq(CSV.parse(File.read(params[:mable_etl_file_path]), headers: true))
     end
   end
 end

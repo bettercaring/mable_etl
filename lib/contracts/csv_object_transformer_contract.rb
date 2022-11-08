@@ -4,10 +4,10 @@ module MableEtl
   module Contracts
     class CsvObjectTransformerContract < Dry::Validation::Contract
       params do
-        required(:file_path).value(:string)
+        required(:mable_etl_file_path).value(:string)
       end
 
-      rule(:file_path) do
+      rule(:mable_etl_file_path) do
         key.failure('file must exist') unless File.exist?(value)
       end
     end

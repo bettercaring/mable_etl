@@ -11,7 +11,7 @@ module MableEtl
 
         validation
 
-        @data = params[:data]
+        @data = params[:mable_etl_data]
       end
 
       def transform

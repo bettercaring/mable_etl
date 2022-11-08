@@ -5,7 +5,7 @@ module MableEtl
     class ActiveRecordLoaderContract < Dry::Validation::Contract
       params do
         required(:config_model_name).value(:string)
-        required(:data).value(:array)
+        required(:mable_etl_data).value(:array)
       end
     end
   end
