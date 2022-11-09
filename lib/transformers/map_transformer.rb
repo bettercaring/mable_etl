@@ -15,7 +15,7 @@ module MableEtl
                          error_klass: MableEtl::Errors::Transformers::MapTransformer
 
       def initialize(params)
-        @data = params[:data]
+        @data = params[:mable_etl_data]
       end
 
       def transform

@@ -15,10 +15,14 @@ module MableEtl
 
       def initialize(params)
         @active_record_model_name = params[:config_model_name].constantize
-        @data = params[:data]
+        @data = params[:mable_etl_data]
       end
 
       def load
+        unless @active_record_model_name.insert_all(@data)
+          raise MableEtl::Errors::Loaders::ActiveRecordLoader, 'Could not save'
+        end
+
         @active_record_model_name.insert_all(@data)
       end
     end

@@ -7,7 +7,7 @@ RSpec.describe MableEtl::Extractors::LocalExtractor do
   let(:subject) { described_class.new(params) }
   let(:params) do
     {
-      file_path:
+      file_path: file_path
     }
   end
 

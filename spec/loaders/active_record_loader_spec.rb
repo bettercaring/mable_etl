@@ -9,7 +9,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
   let(:params) do
     {
       config_model_name: 'User',
-      data:
+      mable_etl_data:
       [{ id: 1, name: 'name', email: 'chicken@gmail.com' },
        { id: 1, name: 'gerald', email: 'chicken@gmail.com' },
        { id: 2, name: 'hello', email: 'hello@gmail.com' }]
@@ -35,10 +35,10 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
 
       context 'when data is nil' do
         before do
-          params[:data] = nil
+          params[:mable_etl_data] = nil
         end
         it 'raises error' do
-          expect { active_record_loader }.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader, { data: ['must be an array'] }.to_s )
+          expect { active_record_loader }.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader, { mable_etl_data: ['must be an array'] }.to_s )
         end
       end
     end

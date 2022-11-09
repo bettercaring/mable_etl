@@ -15,7 +15,7 @@ module MableEtl
       def self.for(params)
         validations(params)
 
-        class_eval("MableEtl::Transformers::#{params[:transformer_type]}", __FILE__, __LINE__).new(params).transform
+        class_eval("MableEtl::Transformers::#{params[:transformer_type]}", __FILE__, __LINE__).new(params)
       end
 
       def self.validations(params)

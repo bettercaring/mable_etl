@@ -16,7 +16,7 @@ module MableEtl
                          error_klass: MableEtl::Errors::Transformers::CsvObjectTransformer
 
       def initialize(params)
-        @file_path = params[:file_path]
+        @file_path = params[:mable_etl_file_path]
       end
 
       def transform
