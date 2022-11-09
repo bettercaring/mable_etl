@@ -4,7 +4,7 @@ module MableEtl
   module Contracts
     class MapTransformerContract < Dry::Validation::Contract
       params do
-        required(:data).filled
+        required(:mable_etl_data).filled
       end
     end
   end

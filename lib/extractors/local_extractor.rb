@@ -18,6 +18,8 @@ module MableEtl
 
       def extract
         FileUtils.cp(@file_path, 'temp/')
+        file_name = File.basename(@file_path)
+        "temp/#{file_name}"
       end
 
       private

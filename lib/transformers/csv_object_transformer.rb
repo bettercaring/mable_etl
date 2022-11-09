@@ -12,7 +12,7 @@ module MableEtl
 
         validation
 
-        @file_path = params[:file_path]
+        @file_path = params[:mable_etl_file_path]
       end
 
       def transform
