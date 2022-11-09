@@ -16,21 +16,21 @@ module MableEtl
     end
 
     def process
-      extractor
+      extract
 
-      transformer
+      transform
 
-      File.delete(params[:mable_etl_file_path]) unless loader.nil?
+      File.delete(params[:mable_etl_file_path]) unless load.nil?
 
       'success'
     end
 
-    def extractor
+    def extract
       mable_etl_file_path = MableEtl::Extractors::ExtractorFactory.for(params).extract
       @params = params.merge({ mable_etl_file_path: mable_etl_file_path })
     end
 
-    def transformer
+    def transform
       @params[:transformer_types].each do |transformer_type|
         @params = params.merge({ transformer_type: transformer_type })
         mable_etl_data = MableEtl::Transformers::TransformerFactory.for(params).transform
@@ -38,8 +38,8 @@ module MableEtl
       end
     end
 
-    def loader
-      @loader ||= MableEtl::Loaders::LoaderFactory.for(params).load
+    def load
+      @load ||= MableEtl::Loaders::LoaderFactory.for(params).load
     end
   end
 end
