@@ -16,13 +16,28 @@ module MableEtl
       end
 
       def load
-        binding.pry
-        unless result = @active_record_model_name.insert_all(@data, unique_by: ['name'])
+        result_2 = @active_record_model_name.insert_all([Array.new(3).flat_map {|arr| { email: "testEmail#{rand(100)}", name: "testName#{rand(100)}" } }].flatten)
+
+        result_1 = @active_record_model_name.insert_all([Array.new(3).flat_map {|arr| { email: "testEmail#{rand(100)}", name: "testName#{rand(100)}" } }].flatten)
+
+        result_4 = @active_record_model_name.insert_all([{}])
+
+        unless result_3 = @active_record_model_name.insert_all(@data)
           # binding.pry
           raise MableEtl::Errors::Loaders::ActiveRecordLoader, 'Could not save'
         end
-        # binding.pry
-        result
+        puts '----------------'
+        puts result_1.inspect
+        puts '----------------'
+        puts result_2.inspect
+        puts '----------------'
+        puts result_3.inspect
+        puts '----------------'
+        puts result_4.inspect
+
+        @active_record_model_name.count
+        @active_record_model_name.all
+        binding.pry
       end
 
       def validations(params)
