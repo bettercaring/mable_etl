@@ -10,10 +10,12 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
     {
       config_model_name: 'User',
       mable_etl_data:
-      [{ id: 1, name: 'name', email: 'chicken@gmail.com' },
-       { id: 1, name: 'gerald', email: 'chicken@gmail.com' },
-       { id: 2, name: 'hello', email: 'hello@gmail.com' }]
     }
+  end
+  let(:mable_etl_data) do
+    [{ id: 1, name: 'name', email: 'chicken@gmail.com' },
+     { id: 1, name: 'gerald', email: 'chicken@gmail.com' },
+     { id: 2, name: 'hello', email: 'hello@gmail.com' }]
   end
 
   describe '#initialize' do
@@ -29,7 +31,10 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
           params[:config_model_name] = nil
         end
         it 'raises error' do
-          expect { active_record_loader }.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader, { config_model_name: ['must be a string'] }.to_s )
+          expect do
+            active_record_loader
+          end.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader,
+                             { config_model_name: ['must be a string'] }.to_s)
         end
       end
 
@@ -38,7 +43,10 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
           params[:mable_etl_data] = nil
         end
         it 'raises error' do
-          expect { active_record_loader }.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader, { mable_etl_data: ['must be an array'] }.to_s )
+          expect do
+            active_record_loader
+          end.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader,
+                             { mable_etl_data: ['must be an array'] }.to_s)
         end
       end
     end
@@ -54,6 +62,16 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
 
     it 'does not add duplicate data to the table' do
       expect(User.pluck(:id)).to eq([1, 2])
+    end
+
+    context 'is unsuccessful' do
+      # let(:mable_etl_data) do
+      #   [{}]
+      # end
+      it 'raises an error' do
+        binding.pry
+        expect { active_record_loader.load }.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader)
+      end
     end
   end
 end
