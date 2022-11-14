@@ -2,6 +2,7 @@
 
 require 'pry'
 require_relative '../contracts/active_record_loader_contract'
+require_relative './loader_result'
 
 module MableEtl
   class Loaders
@@ -18,7 +19,7 @@ module MableEtl
       def load
         @active_record_model_name.insert_all(@data)
 
-        "Load success: #{@data.count} loaded and #{records} exist."
+        LoaderResult.new(message: "Load success: #{@data.count} loaded and #{records} exist.")
       end
 
       def records

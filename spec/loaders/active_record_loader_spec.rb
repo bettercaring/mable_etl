@@ -54,16 +54,23 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
 
   describe '#load' do
     subject(:load_subject) { active_record_loader.load }
+    let(:loader_result) { instance_double(MableEtl::Loaders::LoaderResult) }
 
     context 'is successful' do
-      before { load_subject }
+      before do
+        allow(MableEtl::Loaders::LoaderResult).to receive(:new).with(
+          message: 'Load success: 3 loaded and 2 exist.'
+        ).and_return(loader_result)
+
+        load_subject
+      end
 
       it 'adds the data to the table' do
         expect(User.count).to eq(2)
       end
 
-      it 'returns success message' do
-        expect(load_subject).to eq 'Load success: 3 loaded and 2 exist.'
+      it 'returns a loader result' do
+        expect(load_subject).to eq loader_result
       end
 
       it 'does not add duplicate data to the table' do
@@ -79,7 +86,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
       end
 
       it 'raises an error' do
-        expect { load_subject }.to raise_error
+        expect { load_subject }.to raise_error(ActiveModel::UnknownAttributeError)
       end
     end
   end
