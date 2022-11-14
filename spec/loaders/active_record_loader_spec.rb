@@ -53,25 +53,34 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
   end
 
   describe '#load' do
-    before do
-      active_record_loader.load
-    end
-    it 'adds the data to the table' do
-      expect(User.count).to eq(2)
+    subject(:load_subject) { active_record_loader.load }
+
+    context 'is successful' do
+      before { load_subject }
+
+      it 'adds the data to the table' do
+        expect(User.count).to eq(2)
+      end
+
+      it 'returns success message' do
+        expect(load_subject).to eq 'Load success: 3 loaded and 2 exist.'
+      end
+
+      it 'does not add duplicate data to the table' do
+        expect(User.pluck(:id)).to eq([1, 2])
+      end
     end
 
-    it 'does not add duplicate data to the table' do
-      expect(User.pluck(:id)).to eq([1, 2])
-    end
+    context 'is unsuccessful' do
+      let(:mable_etl_data) do
+        [{ id: 1, age: 'name', email: 'chicken@gmail.com' },
+         { id: 1, age: 'gerald', email: 'chicken@gmail.com' },
+         { id: 2, age: 'hello', email: 'hello@gmail.com' }]
+      end
 
-    # context 'is unsuccessful' do
-    #   # let(:mable_etl_data) do
-    #   #   [{}]
-    #   # end
-    #   it 'raises an error' do
-    #     # 
-    #     expect { active_record_loader.load }.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader)
-    #   end
-    # end
+      it 'raises an error' do
+        expect { load_subject }.to raise_error
+      end
+    end
   end
 end

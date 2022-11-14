@@ -16,11 +16,21 @@ module MableEtl
       end
 
       def load
-        unless @active_record_model_name.insert_all(@data)
-          raise MableEtl::Errors::Loaders::ActiveRecordLoader, 'Could not save'
-        end
-        # binding.pry
-        # "Load success #{@data.count}"
+        @active_record_model_name.insert_all(@data)
+
+        "Load success: #{@data.count} loaded and #{records} exist."
+      end
+
+      def records
+        @records ||= @active_record_model_name.where(query).count
+      end
+
+      def query
+        @data.map { |record_data| record_data_query(record_data) }.join(' OR ')
+      end
+
+      def record_data_query(record)
+        record.map { |name, value| "#{name} = '#{value}'" }.join(' AND ')
       end
 
       def validations(params)
