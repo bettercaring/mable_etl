@@ -2,6 +2,7 @@
 
 require_relative 'mable_etl/version'
 require 'mable_etl/configuration'
+require 'mable_etl/control'
 Dir.glob(File.dirname(__dir__) + "/contracts/**/*.rb").each { |file| require file }
 
 require 'pry'
