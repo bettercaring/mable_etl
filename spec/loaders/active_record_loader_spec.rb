@@ -9,7 +9,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
   let(:params) do
     {
       config_model_name: 'User',
-      mable_etl_data:
+      mable_etl_data: mable_etl_data
     }
   end
   let(:mable_etl_data) do
