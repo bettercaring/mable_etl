@@ -23,7 +23,8 @@ module MableEtl
       def extract
         s3 = Aws::S3::Client.new(access_key_id: @s3_credentials[:access_key_id],
                                  secret_access_key: @s3_credentials[:secret_access_key])
-        s3.get_object({ response_target: @temp_file, bucket: @s3_bucket, key: @s3_path })
+        s3_object = s3.get_object({ response_target: @temp_file, bucket: @s3_bucket, key: @s3_path })
+        @temp_file if s3_object.present?
       end
 
       private
