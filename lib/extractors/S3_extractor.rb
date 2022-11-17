@@ -5,6 +5,7 @@ require 'pry'
 require 'csv'
 require_relative '../contracts/s3_extractor_contract'
 require 'mable_etl/errors/extractors/s3_extractor'
+require_relative './extractor_result'
 
 module MableEtl
   class Extractors
@@ -25,6 +26,9 @@ module MableEtl
                                  secret_access_key: @s3_credentials[:secret_access_key])
         s3_object = s3.get_object({ response_target: @temp_file, bucket: @s3_bucket, key: @s3_path })
         @temp_file if s3_object.present?
+
+        ExtractorResult.new(message: "Extract success: S3 file #{@s3_path} extracted successfully",
+                            mable_etl_file_path: @temp_file)
       end
 
       private

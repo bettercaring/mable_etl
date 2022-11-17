@@ -16,8 +16,15 @@ RSpec.describe MableEtl::Control do
   end
 
   describe '#process' do
-    it 'is successful' do
-      expect(control.process).to eq('success')
+    context 'is successful' do
+      let(:loader_result) { instance_double(MableEtl::Loaders::LoaderResult) }
+
+      before do
+        allow(MableEtl::Loaders::LoaderResult).to receive(:new).and_return(loader_result)
+      end
+      it 'is returns a loader object' do
+        expect(control.process).to eq(loader_result)
+      end
     end
   end
 end

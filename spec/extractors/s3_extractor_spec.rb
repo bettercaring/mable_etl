@@ -64,7 +64,19 @@ RSpec.describe MableEtl::Extractors::S3Extractor do
     end
   end
 
-  it 'extract a file from S3' do
-    expect(subject.extract).to eq('temp/job_digest_temp.csv')
+  context 'is successful' do
+    let(:extract_result) { instance_double(MableEtl::Extractors::ExtractorResult) }
+
+    before do
+      allow(MableEtl::Extractors::ExtractorResult).to receive(:new).with(
+        message: "Extract success: S3 file #{s3_path} extracted successfully", mable_etl_file_path: 'temp/job_digest_temp.csv'
+      ).and_return(extract_result)
+
+      subject.extract
+    end
+
+    it 'returns a result object' do
+      expect(subject.extract).to eq(extract_result)
+    end
   end
 end

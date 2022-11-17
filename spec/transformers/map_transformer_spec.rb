@@ -31,9 +31,22 @@ RSpec.describe MableEtl::Transformers::MapTransformer do
   end
 
   describe '#transform' do
-    it 'maps the data to a hash' do
-      expect(map_transformer.transform).to eq([{ 'name' => 'Mable', 'id' => '1' },
-                                               { 'name' => 'better_caring', 'id' => '2' }])
+    context 'is successful' do
+      let(:mapped_result) do
+        [{ 'name' => 'Mable', 'id' => '1' },
+         { 'name' => 'better_caring', 'id' => '2' }]
+      end
+      let(:transform_result) { instance_double(MableEtl::Transformers::TransformerResult) }
+
+      before do
+        allow(MableEtl::Transformers::TransformerResult).to receive(:new).with(
+          message: "Transformer success: #{params[:mable_etl_data]} mapped to a hash", mable_etl_data: mapped_result
+        ).and_return(transform_result)
+      end
+
+      it 'maps the data to a hash' do
+        expect(map_transformer.transform).to eq(transform_result)
+      end
     end
   end
 end
