@@ -3,16 +3,20 @@
 require 'pry'
 require 'csv'
 require_relative '../contracts/csv_object_transformer_contract'
+require_relative '../helpers/validation'
+require 'mable_etl/errors/transformers/csv_object_transformer'
 require_relative './transformer_result'
 
 module MableEtl
   class Transformers
     class CsvObjectTransformer
+      prepend Validation
+      attr_accessor :params
+
+      validation_options contract_klass: MableEtl::Contracts::CsvObjectTransformerContract,
+                         error_klass: MableEtl::Errors::Transformers::CsvObjectTransformer
+
       def initialize(params)
-        @params = params
-
-        validation
-
         @file_path = params[:mable_etl_file_path]
       end
 
@@ -22,16 +26,6 @@ module MableEtl
 
         TransformerResult.new(message: "Transformer success: #{@file_path} transformed to CSV object",
                               mable_etl_data: result)
-      end
-
-      attr_reader :params, :contract_result
-
-      def validation
-        contract_result = MableEtl::Contracts::CsvObjectTransformerContract.new.call(params)
-
-        return if contract_result.success?
-
-        raise MableEtl::Errors::Transformers::CsvObjectTransformer, contract_result.errors.to_h.to_s
       end
     end
   end

@@ -10,11 +10,13 @@ require_relative './extractor_result'
 module MableEtl
   class Extractors
     class S3Extractor
+      prepend Validation
+      attr_accessor :params
+
+      validation_options contract_klass: MableEtl::Contracts::S3ExtractorContract,
+                         error_klass: MableEtl::Errors::Extractors::S3Extractor
+
       def initialize(params)
-        @params = params
-
-        validation
-
         @s3_credentials = params[:s3_credentials]
         @s3_path = params[:s3_path]
         @s3_bucket = params[:s3_bucket]
@@ -29,18 +31,6 @@ module MableEtl
 
         ExtractorResult.new(message: "Extract success: S3 file #{@s3_path} extracted successfully",
                             mable_etl_file_path: @temp_file)
-      end
-
-      private
-
-      attr_reader :params, :contract_result
-
-      def validation
-        contract_result = MableEtl::Contracts::S3ExtractorContract.new.call(params)
-
-        return if contract_result.success?
-
-        raise MableEtl::Errors::Extractors::S3Extractor, contract_result.errors.to_h.to_s
       end
     end
   end
