@@ -44,10 +44,25 @@ RSpec.describe MableEtl::Extractors::LocalExtractor do
   end
 
   context '#extract' do
-    it 'extracts a file from local' do
-      subject.extract
-      expect(File).to exist('temp/test.csv')
-      File.delete('temp/test.csv')
+    let(:extract_result) { instance_double(MableEtl::Extractors::ExtractorResult) }
+
+    context 'is successful' do
+      before do
+        allow(MableEtl::Extractors::ExtractorResult).to receive(:new).with(
+          message: "Extract success: local file #{file_path} extracted to temp folder", mable_etl_file_path: 'temp/test.csv'
+        ).and_return(extract_result)
+
+        subject.extract
+      end
+
+      it 'returns a result object' do
+        expect(subject.extract).to eq(extract_result)
+      end
+
+      it 'extracts a file from local' do
+        expect(File).to exist('temp/test.csv')
+        File.delete('temp/test.csv')
+      end
     end
   end
 end

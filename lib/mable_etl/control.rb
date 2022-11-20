@@ -16,26 +16,33 @@ module MableEtl
     end
 
     def process
-      extract
+      result = extract
+      return result unless result.success?
 
-      transform
+      result = transform
+      return result unless result.success?
 
       File.delete(params[:mable_etl_file_path]) unless load.nil?
 
-      'success'
+      load
     end
 
     def extract
-      mable_etl_file_path = MableEtl::Extractors::ExtractorFactory.for(params).extract
-      @params = params.merge({ mable_etl_file_path: mable_etl_file_path })
+      result = MableEtl::Extractors::ExtractorFactory.for(params).extract
+
+      @params = params.merge({ mable_etl_file_path: result.mable_etl_file_path })
+
+      result
     end
 
     def transform
       @params[:transformer_types].each do |transformer_type|
         @params = params.merge({ transformer_type: transformer_type })
-        mable_etl_data = MableEtl::Transformers::TransformerFactory.for(params).transform
-        @params = params.merge({ mable_etl_data: mable_etl_data })
+        @result = MableEtl::Transformers::TransformerFactory.for(params).transform
+        @params = params.merge({ mable_etl_data: @result.mable_etl_data })
       end
+
+      @result
     end
 
     def load
