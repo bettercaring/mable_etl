@@ -5,6 +5,7 @@ require 'csv'
 require 'mable_etl/errors/extractors/local_extractor'
 require_relative '../contracts/local_extractor_contract'
 require_relative '../helpers/validation'
+require_relative './extractor_result'
 
 module MableEtl
   class Extractors
@@ -21,7 +22,9 @@ module MableEtl
       def extract
         FileUtils.cp(@file_path, 'temp/')
         file_name = File.basename(@file_path)
-        "temp/#{file_name}"
+
+        ExtractorResult.new(message: "Extract success: local file #{@file_path} extracted to temp folder",
+                            mable_etl_file_path: "temp/#{file_name}")
       end
     end
   end

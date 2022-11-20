@@ -2,6 +2,17 @@
 
 require_relative 'mable_etl/version'
 require 'mable_etl/configuration'
+require 'mable_etl/control'
+require 'extractors/local_extractor'
+require 'extractors/S3_extractor'
+require 'extractors/extractor_factory'
+require 'transformers/transformer_factory'
+require 'transformers/csv_object_transformer'
+require 'transformers/map_transformer'
+require 'loaders/loader_factory'
+require 'loaders/active_record_loader'
+require 'loaders/loader_result'
+
 Dir.glob(File.dirname(__dir__) + "/contracts/**/*.rb").each { |file| require file }
 
 require 'pry'

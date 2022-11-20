@@ -17,10 +17,11 @@ RSpec.describe MableEtl::Extractors::S3Extractor do
   let(:s3_path) { 'spec/fixtures/files/test.csv' }
   let(:s3_bucket) { 'mable_bucket' }
   let(:s3) { Aws::S3::Client.new(stub_responses: true) }
+  let(:s3_object) { { s3_object: 'object' } }
 
   before do
     allow(Aws::S3::Client).to receive(:new).and_return(s3)
-    allow(s3).to receive(:get_object).and_return(true)
+    allow(s3).to receive(:get_object).and_return(s3_object)
   end
 
   describe '#initialize' do
@@ -60,20 +61,22 @@ RSpec.describe MableEtl::Extractors::S3Extractor do
           end.to raise_error(MableEtl::Errors::Extractors::S3Extractor, { s3_credentials: ['must be a hash'] }.to_s)
         end
       end
-
-      context "when s3_path doesn't exist" do
-        let(:s3_path) { '/bad_file_path/file.csv' }
-
-        it 'raises error' do
-          expect do
-            subject
-          end.to raise_error(MableEtl::Errors::Extractors::S3Extractor, { s3_path: ['file must exist'] }.to_s)
-        end
-      end
     end
   end
 
-  it 'extract a file from S3' do
-    expect(subject.extract).to eq(true)
+  context 'is successful' do
+    let(:extract_result) { instance_double(MableEtl::Extractors::ExtractorResult) }
+
+    before do
+      allow(MableEtl::Extractors::ExtractorResult).to receive(:new).with(
+        message: "Extract success: S3 file #{s3_path} extracted successfully", mable_etl_file_path: 'temp/job_digest_temp.csv'
+      ).and_return(extract_result)
+
+      subject.extract
+    end
+
+    it 'returns a result object' do
+      expect(subject.extract).to eq(extract_result)
+    end
   end
 end

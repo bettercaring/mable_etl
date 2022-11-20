@@ -9,11 +9,13 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
   let(:params) do
     {
       config_model_name: 'User',
-      mable_etl_data:
-      [{ id: 1, name: 'name', email: 'chicken@gmail.com' },
-       { id: 1, name: 'gerald', email: 'chicken@gmail.com' },
-       { id: 2, name: 'hello', email: 'hello@gmail.com' }]
+      mable_etl_data: mable_etl_data
     }
+  end
+  let(:mable_etl_data) do
+    [{ id: 1, name: 'name', email: 'chicken@gmail.com' },
+     { id: 1, name: 'gerald', email: 'chicken@gmail.com' },
+     { id: 2, name: 'hello', email: 'hello@gmail.com' }]
   end
 
   describe '#initialize' do
@@ -29,7 +31,10 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
           params[:config_model_name] = nil
         end
         it 'raises error' do
-          expect { active_record_loader }.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader, { config_model_name: ['must be a string'] }.to_s )
+          expect do
+            active_record_loader
+          end.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader,
+                             { config_model_name: ['must be a string'] }.to_s)
         end
       end
 
@@ -38,22 +43,51 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
           params[:mable_etl_data] = nil
         end
         it 'raises error' do
-          expect { active_record_loader }.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader, { mable_etl_data: ['must be an array'] }.to_s )
+          expect do
+            active_record_loader
+          end.to raise_error(MableEtl::Errors::Loaders::ActiveRecordLoader,
+                             { mable_etl_data: ['must be an array'] }.to_s)
         end
       end
     end
   end
 
   describe '#load' do
-    before do
-      active_record_loader.load
-    end
-    it 'adds the data to the table' do
-      expect(User.count).to eq(2)
+    subject(:load_subject) { active_record_loader.load }
+    let(:loader_result) { instance_double(MableEtl::Loaders::LoaderResult) }
+
+    context 'is successful' do
+      before do
+        allow(MableEtl::Loaders::LoaderResult).to receive(:new).with(
+          message: 'Load success: 3 loaded and 2 exist.'
+        ).and_return(loader_result)
+
+        load_subject
+      end
+
+      it 'adds the data to the table' do
+        expect(User.count).to eq(2)
+      end
+
+      it 'returns a loader result' do
+        expect(load_subject).to eq loader_result
+      end
+
+      it 'does not add duplicate data to the table' do
+        expect(User.pluck(:id)).to eq([1, 2])
+      end
     end
 
-    it 'does not add duplicate data to the table' do
-      expect(User.pluck(:id)).to eq([1, 2])
+    context 'is unsuccessful' do
+      let(:mable_etl_data) do
+        [{ id: 1, age: 'name', email: 'chicken@gmail.com' },
+         { id: 1, age: 'gerald', email: 'chicken@gmail.com' },
+         { id: 2, age: 'hello', email: 'hello@gmail.com' }]
+      end
+
+      it 'raises an error' do
+        expect { load_subject }.to raise_error(ActiveModel::UnknownAttributeError)
+      end
     end
   end
 end

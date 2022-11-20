@@ -4,6 +4,7 @@ require 'pry'
 require 'mable_etl/errors/transformers/map_transformer'
 require_relative '../contracts/map_transformer_contract'
 require_relative '../helpers/validation'
+require_relative './transformer_result'
 
 module MableEtl
   class Transformers
@@ -19,9 +20,11 @@ module MableEtl
       end
 
       def transform
-        @data.map(&:to_h)
+        result = @data.map(&:to_h)
+
+        TransformerResult.new(message: "Transformer success: #{@data} mapped to a hash",
+                              mable_etl_data: result)
       end
     end
   end
 end
-

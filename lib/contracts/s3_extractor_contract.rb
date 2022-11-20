@@ -8,10 +8,6 @@ module MableEtl
         required(:s3_bucket).value(:string)
         required(:s3_credentials).value(:hash)
       end
-
-      rule(:s3_path) do
-        key.failure('file must exist') unless File.exist?(value)
-      end
     end
   end
 end
