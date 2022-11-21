@@ -2,6 +2,7 @@
 
 require 'pry'
 require_relative '../contracts/active_record_loader_contract'
+require 'mable_etl/errors/loaders/active_record_loader'
 require_relative '../helpers/validation'
 require_relative './loader_result'
 
