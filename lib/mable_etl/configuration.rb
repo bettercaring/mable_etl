@@ -1,4 +1,3 @@
-require 'pry'
 require 'mable_etl/errors/configuration'
 
 module MableEtl
