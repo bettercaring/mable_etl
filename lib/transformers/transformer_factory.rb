@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
 require 'mable_etl/errors/transformers/transformer_factory'
 require_relative '../contracts/transformer_factory_contract'
 require 'transformers/map_transformer'

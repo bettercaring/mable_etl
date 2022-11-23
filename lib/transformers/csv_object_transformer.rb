@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
 require 'csv'
 require_relative '../contracts/csv_object_transformer_contract'
 require_relative '../helpers/validation'

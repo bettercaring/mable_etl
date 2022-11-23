@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'aws-sdk-s3'
-require 'pry'
 require 'csv'
 require_relative '../contracts/s3_extractor_contract'
 require 'mable_etl/errors/extractors/s3_extractor'

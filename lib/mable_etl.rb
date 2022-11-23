@@ -15,8 +15,6 @@ require 'loaders/loader_result'
 
 Dir.glob(File.dirname(__dir__) + "/contracts/**/*.rb").each { |file| require file }
 
-require 'pry'
-
 module MableEtl
   class << self
     attr_accessor :configuration
