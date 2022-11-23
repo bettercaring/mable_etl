@@ -20,8 +20,10 @@ module MableEtl
       end
 
       def load
-        ActiveRecord::Base.transaction do
-          @active_record_model_name.insert_all(@data)
+        ActiveRecord::Base.logger.silence do
+          ActiveRecord::Base.transaction do
+            @active_record_model_name.insert_all(@data)
+          end
         end
 
         LoaderResult.new(message: "Load success: #{@data.count} loaded and #{records} exist.")
