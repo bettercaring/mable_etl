@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
 require_relative '../contracts/extractor_factory_contract'
 require 'mable_etl/errors/extractors/extractor_factory'
 require 'extractors/local_extractor'

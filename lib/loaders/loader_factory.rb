@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
 require_relative '../contracts/loader_factory_contract'
 require 'mable_etl/errors/loaders/loader_factory'
 require 'loaders/active_record_loader'
