@@ -17,16 +17,29 @@ module MableEtl
       def initialize(params)
         @active_record_model_name = params[:config_model_name].constantize
         @data = params[:mable_etl_data]
+        @silence_log_config = params[:silence_log]
       end
 
       def load
-        ActiveRecord::Base.logger.silence do
+        slience_log do
           ActiveRecord::Base.transaction do
             @active_record_model_name.insert_all(@data)
           end
         end
 
         LoaderResult.new(message: "Load success: #{@data.count} loaded and #{records} exist.")
+      end
+
+      private
+
+      def slience_log(&block)
+        if @silence_log_config
+          ActiveRecord::Base.logger.silence do
+            block.call
+          end
+        else
+          yield
+        end
       end
 
       def records

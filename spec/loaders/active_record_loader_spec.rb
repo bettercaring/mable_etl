@@ -9,7 +9,8 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
   let(:params) do
     {
       config_model_name: 'User',
-      mable_etl_data: mable_etl_data
+      mable_etl_data: mable_etl_data,
+      silence_log: silence_log
     }
   end
   let(:mable_etl_data) do
@@ -17,6 +18,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
      { id: 1, name: 'gerald', email: 'chicken@gmail.com' },
      { id: 2, name: 'hello', email: 'hello@gmail.com' }]
   end
+  let(:silence_log) { true }
 
   describe '#initialize' do
     context 'with valid params' do
@@ -62,6 +64,8 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
           message: 'Load success: 3 loaded and 2 exist.'
         ).and_return(loader_result)
 
+        allow(ActiveRecord::Base.logger).to receive(:silence).and_call_original
+
         load_subject
       end
 
@@ -75,6 +79,22 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
 
       it 'does not add duplicate data to the table' do
         expect(User.pluck(:id)).to eq([1, 2])
+      end
+
+      context 'when log is silenced' do
+        let(:silence_log) { true }
+
+        it 'silences the log' do
+          expect(ActiveRecord::Base.logger).to receive(:silence)
+        end
+      end
+
+      context 'when log is not silenced' do
+        let(:silence_log) { false }
+
+        it 'does not silence the log' do
+          expect(ActiveRecord::Base.logger).not_to receive(:silence)
+        end
       end
     end
 
