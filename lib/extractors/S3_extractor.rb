@@ -42,12 +42,12 @@ module MableEtl
                             mable_etl_file_path: tmp_file_path)
       end
 
-      def tmp_folder_path
-        FileUtils.mkdir_p([@tmp_folder_path, 'mable_etl'].join('/')).first
+      def etl_tmp_folder_path
+        @etl_tmp_folder_path ||= FileUtils.mkdir_p([@tmp_folder_path, 'mable_etl'].join('/')).first
       end
 
       def tmp_file_path
-        [tmp_folder_path, File.basename(@s3_path)].join('/')
+        @tmp_file_path ||= [etl_tmp_folder_path, File.basename(@s3_path)].join('/')
       end
     end
   end

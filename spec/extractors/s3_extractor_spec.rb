@@ -72,11 +72,17 @@ RSpec.describe MableEtl::Extractors::S3Extractor do
         message: "Extract success: S3 file #{s3_path} extracted successfully", mable_etl_file_path: '/tmp/mable_etl/test.csv'
       ).and_return(extract_result)
 
+      allow(FileUtils).to receive(:mkdir_p).and_return(['/tmp/mable_etl'])
+
       subject.extract
     end
 
     it 'returns a result object' do
       expect(subject.extract).to eq(extract_result)
+    end
+
+    it 'creates etl folder' do
+      expect(FileUtils).to have_received(:mkdir_p).with('/tmp/mable_etl')
     end
   end
 end
