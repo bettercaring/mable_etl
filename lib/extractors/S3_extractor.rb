@@ -19,17 +19,35 @@ module MableEtl
         @s3_credentials = params[:s3_credentials]
         @s3_path = params[:s3_path]
         @s3_bucket = params[:s3_bucket]
-        @temp_file = params[:temp_file]
+        @tmp_folder_path = params[:tmp_folder_path]
       end
 
       def extract
-        s3 = Aws::S3::Client.new(access_key_id: @s3_credentials[:access_key_id],
-                                 secret_access_key: @s3_credentials[:secret_access_key])
-        s3_object = s3.get_object({ response_target: @temp_file, bucket: @s3_bucket, key: @s3_path })
-        @temp_file if s3_object.present?
+        s3 = Aws::S3::Client.new(
+          access_key_id: @s3_credentials[:access_key_id],
+          secret_access_key: @s3_credentials[:secret_access_key]
+        )
+
+        s3_object = s3.get_object(
+          {
+            response_target: tmp_file_path,
+            bucket: @s3_bucket,
+            key: @s3_path
+          }
+        )
+
+        @tmp_file_path if s3_object.present?
 
         ExtractorResult.new(message: "Extract success: S3 file #{@s3_path} extracted successfully",
-                            mable_etl_file_path: @temp_file)
+                            mable_etl_file_path: tmp_file_path)
+      end
+
+      def tmp_folder_path
+        FileUtils.mkdir_p([@tmp_folder_path, 'mable_etl'].join('/')).first
+      end
+
+      def tmp_file_path
+        [tmp_folder_path, File.basename(@s3_path)].join('/')
       end
     end
   end

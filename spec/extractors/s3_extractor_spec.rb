@@ -10,7 +10,7 @@ RSpec.describe MableEtl::Extractors::S3Extractor do
       s3_credentials: s3_credentials,
       s3_bucket: s3_bucket,
       s3_path: s3_path,
-      temp_file: 'temp/job_digest_temp.csv'
+      tmp_folder_path: '/tmp'
     }
   end
   let(:s3_credentials) { { access_key_id: 'access_key', secret_access_key: 'secret_access_key' } }
@@ -69,7 +69,7 @@ RSpec.describe MableEtl::Extractors::S3Extractor do
 
     before do
       allow(MableEtl::Extractors::ExtractorResult).to receive(:new).with(
-        message: "Extract success: S3 file #{s3_path} extracted successfully", mable_etl_file_path: 'temp/job_digest_temp.csv'
+        message: "Extract success: S3 file #{s3_path} extracted successfully", mable_etl_file_path: '/tmp/mable_etl/test.csv'
       ).and_return(extract_result)
 
       subject.extract
