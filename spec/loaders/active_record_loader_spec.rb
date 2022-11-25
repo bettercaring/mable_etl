@@ -85,7 +85,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
         let(:silence_log) { true }
 
         it 'silences the log' do
-          expect(ActiveRecord::Base.logger).to receive(:silence)
+          expect(ActiveRecord::Base.logger).to have_received(:silence)
         end
       end
 
