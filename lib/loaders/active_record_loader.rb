@@ -18,6 +18,7 @@ module MableEtl
         @active_record_model_name = params[:config_model_name].constantize
         @data = params[:mable_etl_data]
         @silence_log_config = params[:silence_log]
+        @logger = params[:logger]
       end
 
       def load
@@ -34,7 +35,7 @@ module MableEtl
 
       def slience_log(&block)
         if @silence_log_config
-          ActiveRecord::Base.logger.silence do
+          @logger.silence do
             block.call
           end
         else

@@ -4,15 +4,24 @@ require 'spec_helper'
 require 'mable_etl/errors/loaders/active_record_loader'
 require 'loaders/active_record_loader'
 
+class DummyLogger
+  def silence
+    yield
+  end
+end
+
 RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
   subject(:active_record_loader) { described_class.new(params) }
   let(:params) do
     {
       config_model_name: 'User',
       mable_etl_data: mable_etl_data,
-      silence_log: silence_log
+      silence_log: silence_log,
+      logger: logger
     }
   end
+
+  let(:logger) { DummyLogger.new }
   let(:mable_etl_data) do
     [{ id: 1, name: 'name', email: 'chicken@gmail.com' },
      { id: 1, name: 'gerald', email: 'chicken@gmail.com' },
@@ -64,7 +73,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
           message: 'Load success: 3 loaded and 2 exist.'
         ).and_return(loader_result)
 
-        allow(ActiveRecord::Base.logger).to receive(:silence).and_call_original
+        allow(logger).to receive(:silence).and_call_original
 
         load_subject
       end
@@ -85,7 +94,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
         let(:silence_log) { true }
 
         it 'silences the log' do
-          expect(ActiveRecord::Base.logger).to have_received(:silence)
+          expect(logger).to have_received(:silence)
         end
       end
 
@@ -93,7 +102,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
         let(:silence_log) { false }
 
         it 'does not silence the log' do
-          expect(ActiveRecord::Base.logger).not_to receive(:silence)
+          expect(logger).not_to have_received(:silence)
         end
       end
     end
