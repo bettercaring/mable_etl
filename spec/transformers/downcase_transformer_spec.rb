@@ -7,9 +7,14 @@ RSpec.describe MableEtl::Transformers::DowncaseTransformer do
   subject(:downcase_transformer) { described_class.new(params) }
   let(:params) do
     {
-      mable_etl_data: ::CSV.parse(File.read('spec/fixtures/files/test.csv'), headers: true),
+      mable_etl_data: mable_etl_data,
       downcase_columns: ['name']
     }
+  end
+
+  let(:mable_etl_data) do
+    [{ 'name' => 'MaBle', 'id' => '1', 'email' => 'DJDJSJKKJAKJKJDKJDKJSjjkkk@test.com'},
+     { 'name' => 'BetTer_caRing', 'id' => '2' }]
   end
 
   describe '#initialize' do
@@ -33,18 +38,13 @@ RSpec.describe MableEtl::Transformers::DowncaseTransformer do
 
   describe '#transform' do
     context 'is successful' do
-      let(:downcased_result) do
-        [{ 'name' => 'MaBble', 'id' => '1', 'email' => 'DJDJSJKKJAKJKJDKJDKJSjjkkk@test.com'},
-         { 'name' => 'BetTer_caRing', 'id' => '2' }]
-      end
-
       let(:transformed_result) do
         [{ 'name' => 'mable', 'id' => '1', 'email' => 'DJDJSJKKJAKJKJDKJDKJSjjkkk@test.com' },
          { 'name' => 'better_caring', 'id' => '2' }]
       end
 
       it 'downcases the data' do
-#        expect(downcase_transformer.transform.result).to eq(transform_result)
+       expect(downcase_transformer.transform.mable_etl_data).to eq(transformed_result)
       end
     end
   end

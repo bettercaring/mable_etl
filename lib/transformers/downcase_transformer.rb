@@ -11,7 +11,7 @@ module MableEtl
       prepend Validation
       attr_accessor :params
 
-      validation_options contract_klass: MableEtl::Contracts::DowncaseTranformerContract,
+      validation_options contract_klass: MableEtl::Contracts::DowncaseTransformerContract,
                          error_klass: MableEtl::Errors::Transformers::DowncaseTransformer
 
       def initialize(params)
@@ -21,7 +21,7 @@ module MableEtl
 
       def transform
         result = @data.map do |row|
-          downcase_columns.each do |column|
+          @downcase_columns.each do |column|
             row_data = row[column]
 
             next unless row_data.is_a?(String)
@@ -31,7 +31,7 @@ module MableEtl
 
           row
         end
-
+        # binding.pry
         TransformerResult.new(message: 'Transformer success: data downcased',
                               mable_etl_data: result)
       end
