@@ -12,14 +12,11 @@ module MableEtl
 
     def initialize(params)
       @params = params
-      # binding.pry
       @logger = params[:logger]
     end
 
     def process
-      # binding.pry
       result = log_result(extract)
-      binding.pry
       return result unless result.success?
 
       result = transform do |transform_result|
@@ -65,7 +62,6 @@ module MableEtl
     end
 
     def log_result(result)
-      # binding.pry
       if result.success?
         logger.info(result.message)
       else

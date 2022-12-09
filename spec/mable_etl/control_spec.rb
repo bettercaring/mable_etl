@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 require 'mable_etl/control'
+require 'fixtures/dummy_logger'
 
 RSpec.describe MableEtl::Control do
   subject(:control) { described_class.new(params) }
@@ -13,14 +14,13 @@ RSpec.describe MableEtl::Control do
       config_model_name: 'User',
       loader_type: 'ActiveRecordLoader',
       downcase_columns: ['name'],
-      logger: logger
+      logger: dummy_logger
     }
   end
-  let(:logger) { instance_double(Rails) }
+  let(:dummy_logger) { DummyLogger.new }
 
   before do
-    allow(Rails).to receive(:logger).and_return(logger)
-    # allow(logger).to receive(:info).and_return('something')
+    allow(dummy_logger).to receive(:info).with(any_args)
   end
 
   describe '#process' do
@@ -31,7 +31,6 @@ RSpec.describe MableEtl::Control do
         allow(MableEtl::Loaders::LoaderResult).to receive(:new).and_return(loader_result)
       end
       it 'is returns a loader object' do
-        binding.pry
         expect(control.process).to eq(loader_result)
       end
     end
