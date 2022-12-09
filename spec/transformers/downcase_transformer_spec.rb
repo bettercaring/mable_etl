@@ -31,6 +31,10 @@ RSpec.describe MableEtl::Transformers::DowncaseTransformer do
         end
 
         it 'raises error' do
+          expect do
+            downcase_transformer
+          end.to raise_error(MableEtl::Errors::Transformers::DowncaseTransformer,
+                             { mable_etl_data: ['must be filled'] }.to_s)
         end
       end
     end
@@ -44,7 +48,7 @@ RSpec.describe MableEtl::Transformers::DowncaseTransformer do
       end
 
       it 'downcases the data' do
-       expect(downcase_transformer.transform.mable_etl_data).to eq(transformed_result)
+        expect(downcase_transformer.transform.mable_etl_data).to eq(transformed_result)
       end
     end
   end

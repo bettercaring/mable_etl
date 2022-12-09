@@ -31,7 +31,7 @@ module MableEtl
 
           row
         end
-        # binding.pry
+
         TransformerResult.new(message: 'Transformer success: data downcased',
                               mable_etl_data: result)
       end
