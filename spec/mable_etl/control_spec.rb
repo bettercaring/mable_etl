@@ -8,8 +8,8 @@ RSpec.describe MableEtl::Control do
   subject(:control) { described_class.new(params) }
   let(:params) do
     {
-      extractor_type: extractor_type,
-      file_path: file_path,
+      extractor_type: 'LocalExtractor',
+      file_path: 'spec/fixtures/files/test.csv',
       transformer_types: %w[CsvObjectTransformer MapTransformer DowncaseTransformer],
       config_model_name: 'User',
       loader_type: 'ActiveRecordLoader',
@@ -17,8 +17,7 @@ RSpec.describe MableEtl::Control do
       logger: dummy_logger
     }
   end
-  let(:extractor_type) { 'LocalExtractor' }
-  let(:file_path) { 'spec/fixtures/files/test.csv' }
+  
   let(:dummy_logger) { DummyLogger.new }
   let(:loader_result) { instance_double(MableEtl::Loaders::LoaderResult) }
 
