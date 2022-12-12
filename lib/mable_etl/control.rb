@@ -21,7 +21,6 @@ module MableEtl
 
       result = transform do |transform_result|
         transform_result = log_result(transform)
-
         break transform_result unless transform_result.success?
       end
 
@@ -49,7 +48,7 @@ module MableEtl
         @params = params.merge({ transformer_type: transformer_type })
         @result = MableEtl::Transformers::TransformerFactory.for(params).transform
 
-        break @result unless @result.success
+        break @result unless @result.success?
 
         @params = params.merge({ mable_etl_data: @result.mable_etl_data })
       end
