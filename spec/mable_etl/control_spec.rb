@@ -70,7 +70,9 @@ RSpec.describe MableEtl::Control do
               allow(MableEtl::Transformers::TransformerResult).to receive(:new).and_return(transform)
             end
             it 'it returns a logger error' do
-              control.process
+              # control.process
+              control.send(:log_result, transform)
+              # binding.pry
               expect(dummy_logger).to have_received(:error).with('abc')
             end
           end
