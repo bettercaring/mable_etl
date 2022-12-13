@@ -52,7 +52,7 @@ RSpec.describe MableEtl::Transformers::CsvObjectTransformer do
     let(:csv_object_result) { CSV.parse(File.read(params[:mable_etl_file_path]), headers: true) }
     let(:transform_result) { instance_double(MableEtl::Transformers::TransformerResult) }
 
-    context 'is successful' do
+    context 'when successful' do
       before do
         allow(MableEtl::Transformers::TransformerResult).to receive(:new).with(
           message: "Transformer success: #{mable_etl_file_path} transformed to CSV object", mable_etl_data: csv_object_result

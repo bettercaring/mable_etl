@@ -27,7 +27,7 @@ RSpec.describe MableEtl::Transformers::TransformerFactory do
       expect(transformer_factory).to eq(map_transformer)
     end
 
-    context 'error' do
+    context 'with error' do
       before do
         params[:transformer_type] = nil
       end

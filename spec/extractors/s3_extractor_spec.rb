@@ -4,7 +4,8 @@ require 'spec_helper'
 require 'extractors/s3_extractor'
 
 RSpec.describe MableEtl::Extractors::S3Extractor do
-  let(:subject) { described_class.new(params) }
+  subject(:s3_extractor) { described_class.new(params) }
+
   let(:params) do
     {
       s3_credentials: s3_credentials,
@@ -27,7 +28,7 @@ RSpec.describe MableEtl::Extractors::S3Extractor do
   describe '#initialize' do
     context 'with valid params' do
       it 'does not raise error' do
-        expect { subject }.not_to raise_error
+        expect { s3_extractor }.not_to raise_error
       end
     end
 
@@ -37,7 +38,7 @@ RSpec.describe MableEtl::Extractors::S3Extractor do
 
         it 'raises error' do
           expect do
-            subject
+            s3_extractor
           end.to raise_error(MableEtl::Errors::Extractors::S3Extractor, { s3_path: ['must be a string'] }.to_s)
         end
       end
@@ -47,7 +48,7 @@ RSpec.describe MableEtl::Extractors::S3Extractor do
 
         it 'raises error' do
           expect do
-            subject
+            s3_extractor
           end.to raise_error(MableEtl::Errors::Extractors::S3Extractor, { s3_bucket: ['must be a string'] }.to_s)
         end
       end
@@ -57,14 +58,14 @@ RSpec.describe MableEtl::Extractors::S3Extractor do
 
         it 'raises error' do
           expect do
-            subject
+            s3_extractor
           end.to raise_error(MableEtl::Errors::Extractors::S3Extractor, { s3_credentials: ['must be a hash'] }.to_s)
         end
       end
     end
   end
 
-  context 'is successful' do
+  context 'when successful' do
     let(:extract_result) { instance_double(MableEtl::Extractors::ExtractorResult) }
 
     before do
@@ -74,11 +75,11 @@ RSpec.describe MableEtl::Extractors::S3Extractor do
 
       allow(FileUtils).to receive(:mkdir_p).and_return(['/tmp/mable_etl'])
 
-      subject.extract
+      s3_extractor.extract
     end
 
     it 'returns a result object' do
-      expect(subject.extract).to eq(extract_result)
+      expect(s3_extractor.extract).to eq(extract_result)
     end
 
     it 'creates etl folder' do

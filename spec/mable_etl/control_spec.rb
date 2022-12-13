@@ -31,7 +31,7 @@ RSpec.describe MableEtl::Control do
   end
 
   describe '#process' do
-    context 'is successful' do
+    context 'when successful' do
       it 'is returns a loader object' do
         expect(control.process).to eq(loader_result)
       end
@@ -64,7 +64,7 @@ RSpec.describe MableEtl::Control do
         let(:extract_success) { true }
         let(:transform_success) { true }
 
-        it 'should log info', :aggregate_failures do
+        it 'logs info', :aggregate_failures do
           expect(dummy_logger).to have_received(:info).with(extract.message)
           expect(dummy_logger).to have_received(:info).with(transform.message).exactly(3).times
         end
@@ -74,11 +74,11 @@ RSpec.describe MableEtl::Control do
         let(:extract_success) { false }
         let(:transform_success) { false }
 
-        it 'should log extract error', :aggregate_failures do
+        it 'logs extract error', :aggregate_failures do
           expect(dummy_logger).to have_received(:error).with(extract.message)
         end
 
-        it 'should not log transform error', :aggregate_failures do
+        it 'does not log transform error', :aggregate_failures do
           expect(dummy_logger).not_to have_received(:error).with(transform.message)
         end
       end
@@ -87,11 +87,11 @@ RSpec.describe MableEtl::Control do
         let(:extract_success) { true }
         let(:transform_success) { false }
 
-        it 'should log extract info' do
+        it 'logs extract info' do
           expect(dummy_logger).to have_received(:info).with(extract.message)
         end
 
-        it 'should log transform error' do
+        it 'logs transform error' do
           expect(dummy_logger).to have_received(:error).with(transform.message).once
         end
       end
@@ -100,11 +100,11 @@ RSpec.describe MableEtl::Control do
         let(:extract_success) { false }
         let(:transform_success) { true }
 
-        it 'should log extract error', :aggregate_failures do
+        it 'logs extract error', :aggregate_failures do
           expect(dummy_logger).to have_received(:error).with(extract.message)
         end
 
-        it 'should not log transform error' do
+        it 'does not log transform error' do
           expect(dummy_logger).not_to have_received(:info).with(transform.message)
         end
       end

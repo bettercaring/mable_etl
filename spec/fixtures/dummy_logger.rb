@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DummyLogger
   def info(message)
     message
