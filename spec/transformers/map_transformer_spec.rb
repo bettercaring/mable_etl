@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 require 'spec_helper'
 require 'transformers/map_transformer'
@@ -5,6 +7,7 @@ require 'mable_etl/errors/transformers/map_transformer'
 
 RSpec.describe MableEtl::Transformers::MapTransformer do
   subject(:map_transformer) { described_class.new(params) }
+
   let(:params) do
     {
       mable_etl_data: ::CSV.parse(File.read('spec/fixtures/files/test.csv'), headers: true)
@@ -23,8 +26,12 @@ RSpec.describe MableEtl::Transformers::MapTransformer do
         before do
           params[:mable_etl_data] = nil
         end
+
         it 'raises error' do
-          expect { map_transformer }.to raise_error(MableEtl::Errors::Transformers::MapTransformer, { mable_etl_data: ['must be filled'] }.to_s)
+          expect do
+            map_transformer
+          end.to raise_error(MableEtl::Errors::Transformers::MapTransformer,
+                             { mable_etl_data: ['must be filled'] }.to_s)
         end
       end
     end

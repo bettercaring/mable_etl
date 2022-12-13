@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "lib/mable_etl/version"
+require_relative 'lib/mable_etl/version'
 
 Gem::Specification.new do |spec|
   spec.name = 'mable_etl'
@@ -41,11 +41,12 @@ Gem::Specification.new do |spec|
   # guide at: https://bundler.io/guides/creating_gem.html
 
   spec.add_development_dependency 'bundler'
-  spec.add_development_dependency 'rails'
   spec.add_development_dependency 'factory_bot'
   spec.add_development_dependency 'factory_bot_rails'
+  spec.add_development_dependency 'rails'
   spec.add_development_dependency 'rspec-rails'
   spec.add_development_dependency 'sqlite3'
 
   spec.add_development_dependency 'database_cleaner-active_record'
+  spec.metadata['rubygems_mfa_required'] = 'true'
 end

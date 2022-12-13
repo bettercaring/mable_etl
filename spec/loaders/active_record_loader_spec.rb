@@ -12,6 +12,7 @@ end
 
 RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
   subject(:active_record_loader) { described_class.new(params) }
+
   let(:params) do
     {
       config_model_name: 'User',
@@ -41,6 +42,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
         before do
           params[:config_model_name] = nil
         end
+
         it 'raises error' do
           expect do
             active_record_loader
@@ -53,6 +55,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
         before do
           params[:mable_etl_data] = nil
         end
+
         it 'raises error' do
           expect do
             active_record_loader
@@ -65,6 +68,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
 
   describe '#load' do
     subject(:load_subject) { active_record_loader.load }
+
     let(:loader_result) { instance_double(MableEtl::Loaders::LoaderResult) }
 
     context 'is successful' do

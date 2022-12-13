@@ -6,6 +6,7 @@ require 'fixtures/dummy_logger'
 
 RSpec.describe MableEtl::Control do
   subject(:control) { described_class.new(params) }
+
   let(:params) do
     {
       extractor_type: 'LocalExtractor',

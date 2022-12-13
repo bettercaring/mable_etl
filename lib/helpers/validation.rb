@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MableEtl
   module Validation
     def self.prepended(klass)

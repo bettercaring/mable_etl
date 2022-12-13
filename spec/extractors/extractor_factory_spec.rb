@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'extractors/extractor_factory'
 
 RSpec.describe MableEtl::Extractors::ExtractorFactory do
   subject(:extractor_factory) { described_class.for(params) }
+
   let(:params) do
     {
       extractor_type: 'LocalExtractor',
@@ -25,6 +28,7 @@ RSpec.describe MableEtl::Extractors::ExtractorFactory do
       before do
         params[:extractor_type] = nil
       end
+
       it 'raises error when extractor_type nil' do
         expect do
           extractor_factory

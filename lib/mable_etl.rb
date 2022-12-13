@@ -13,7 +13,7 @@ require 'loaders/loader_factory'
 require 'loaders/active_record_loader'
 require 'loaders/loader_result'
 
-Dir.glob(File.dirname(__dir__) + "/contracts/**/*.rb").each { |file| require file }
+Dir.glob("#{File.dirname(__dir__)}/contracts/**/*.rb").sort.each { |file| require file }
 
 module MableEtl
   class << self

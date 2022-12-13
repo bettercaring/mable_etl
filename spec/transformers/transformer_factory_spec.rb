@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'transformers/transformer_factory'
 
 RSpec.describe MableEtl::Transformers::TransformerFactory do
   subject(:transformer_factory) { described_class.for(params) }
+
   let(:params) do
     {
       transformer_type: 'MapTransformer',
@@ -28,8 +31,12 @@ RSpec.describe MableEtl::Transformers::TransformerFactory do
       before do
         params[:transformer_type] = nil
       end
+
       it 'raises error when transformer_type nil' do
-        expect { transformer_factory }.to raise_error(MableEtl::Errors::Transformers::TransformerFactory, { transformer_type: ["must be filled"] }.to_s)
+        expect do
+          transformer_factory
+        end.to raise_error(MableEtl::Errors::Transformers::TransformerFactory,
+                           { transformer_type: ['must be filled'] }.to_s)
       end
     end
   end

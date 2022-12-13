@@ -43,7 +43,7 @@ RSpec.describe MableEtl::Extractors::LocalExtractor do
     end
   end
 
-  context '#extract' do
+  describe '#extract' do
     let(:extract_result) { instance_double(MableEtl::Extractors::ExtractorResult) }
 
     context 'is successful' do
