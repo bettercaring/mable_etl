@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mable_etl/errors/configuration'
 
 module MableEtl

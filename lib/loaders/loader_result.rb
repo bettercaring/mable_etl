@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MableEtl
   class Loaders
     class LoaderResult

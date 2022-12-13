@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'transformers/csv_object_transformer'
 require 'mable_etl/errors/transformers/csv_object_transformer'

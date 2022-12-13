@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'extractors/local_extractor'
 require 'extractors/S3_extractor'
 require 'extractors/extractor_factory'
