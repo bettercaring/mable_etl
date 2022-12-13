@@ -5,11 +5,12 @@ require 'mable_etl/control'
 
 RSpec.describe MableEtl::Control do
   subject(:control) { described_class.new(params) }
+
   let(:params) do
     {
       extractor_type: 'LocalExtractor',
       file_path: 'spec/fixtures/files/test.csv',
-      transformer_types: ['CsvObjectTransformer', 'MapTransformer'],
+      transformer_types: %w[CsvObjectTransformer MapTransformer],
       config_model_name: 'User',
       loader_type: 'ActiveRecordLoader'
     }
@@ -22,6 +23,7 @@ RSpec.describe MableEtl::Control do
       before do
         allow(MableEtl::Loaders::LoaderResult).to receive(:new).and_return(loader_result)
       end
+
       it 'is returns a loader object' do
         expect(control.process).to eq(loader_result)
       end

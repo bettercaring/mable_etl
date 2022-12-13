@@ -4,6 +4,7 @@ require 'mable_etl/errors/transformers/csv_object_transformer'
 
 RSpec.describe MableEtl::Transformers::CsvObjectTransformer do
   subject(:csv_object_transformer) { described_class.new(params) }
+
   let(:params) do
     {
       mable_etl_file_path: mable_etl_file_path
@@ -23,6 +24,7 @@ RSpec.describe MableEtl::Transformers::CsvObjectTransformer do
         before do
           params[:mable_etl_file_path] = nil
         end
+
         it 'raises error' do
           expect do
             csv_object_transformer

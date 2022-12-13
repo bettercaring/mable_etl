@@ -3,6 +3,7 @@ require 'loaders/loader_factory'
 
 RSpec.describe MableEtl::Loaders::LoaderFactory do
   subject(:loader_factory) { described_class.for(params) }
+
   let(:params) do
     {
       config_loader: User,
@@ -29,8 +30,11 @@ RSpec.describe MableEtl::Loaders::LoaderFactory do
       before do
         params[:loader_type] = nil
       end
+
       it 'raises error when loader_type nil' do
-        expect { loader_factory }.to raise_error(MableEtl::Errors::Loaders::LoaderFactory, { loader_type: ["must be filled"] }.to_s)
+        expect do
+          loader_factory
+        end.to raise_error(MableEtl::Errors::Loaders::LoaderFactory, { loader_type: ['must be filled'] }.to_s)
       end
     end
   end
