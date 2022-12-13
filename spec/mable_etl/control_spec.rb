@@ -35,59 +35,46 @@ RSpec.describe MableEtl::Control do
       end
     end
 
-    context 'extractor' do
+    context 'extractor and transformer' do
+      let(:extract) do
+        instance_double(MableEtl::Extractors::ExtractorResult, success?: success, mable_etl_file_path: 'temp/test.csv',
+                                                               message: 'abc')
+      end
+
+      let(:transform) do
+        instance_double(MableEtl::Transformers::TransformerResult, success?: success, mable_etl_data: mable_etl_data,
+                                                                   message: 'def')
+      end
+      let(:success) { true }
+      let(:mable_etl_data) do
+        [{ 'name' => 'Mable', 'id' => '1' },
+         { 'name' => 'better_caring', 'id' => '2' }]
+      end
+
+      before do
+        allow(MableEtl::Extractors::ExtractorResult).to receive(:new).and_return(extract)
+        allow(MableEtl::Transformers::TransformerResult).to receive(:new).and_return(transform)
+      end
+
       context 'when it is successful' do
         it 'should receive info' do
+          dummy_logger = double
+          allow(dummy_logger).to receive(:info).and_return(extract.message, transform.message)
+
           control.process
-          expect(dummy_logger).to have_received(:info).with(message)
+          expect(dummy_logger.info).to eq(extract.message)
+          expect(dummy_logger.info).to eq(transform.message)
         end
 
         context 'when it is unsuccessful' do
-          let(:extract) do
-            instance_double(MableEtl::Extractors::ExtractorResult, success?: false, mable_etl_file_path: 'file_path',
-                                                                   message: 'abc')
-          end
-
-          before do
-            allow(MableEtl::Extractors::ExtractorResult).to receive(:new).and_return(extract)
-          end
+          let(:success) { false }
           it 'it returns a logger error' do
+            dummy_logger = double
+            allow(dummy_logger).to receive(:error).and_return(extract.message, transform.message)
+
             control.process
-            expect(dummy_logger).to have_received(:error).with(extract.message)
-          end
-        end
-      end
-
-      context 'transformer' do
-        let(:transform) do
-          instance_double(MableEtl::Transformers::TransformerResult, success?: success, mable_etl_data: mable_etl_data,
-                                                                     message: message)
-        end
-        let(:success) { true }
-        let(:mable_etl_data) do
-          [{ 'name' => 'Mable', 'id' => '1' },
-           { 'name' => 'better_caring', 'id' => '2' }]
-        end
-
-        before do
-          allow(MableEtl::Transformers::TransformerResult).to receive(:new).and_return(transform)
-        end
-
-        context 'when it is successful' do
-          let(:message) { 'Transformer success: temp/test.csv transformed to CSV object' }
-          it 'should receive info' do
-            control.send(:log_result, transform)
-            expect(dummy_logger).to have_received(:info).with(transform.message)
-          end
-
-          context 'when it is unsuccessful' do
-            let(:message) { 'abc' }
-            let(:success) { false }
-
-            it 'returns a logger error' do
-              control.send(:log_result, transform)
-              expect(dummy_logger).to have_received(:error).with(transform.message)
-            end
+            expect(dummy_logger.error).to eq(extract.message)
+            expect(dummy_logger.error).to eq(transform.message)
           end
         end
       end
