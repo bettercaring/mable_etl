@@ -47,7 +47,7 @@ RSpec.describe MableEtl::Transformers::MapTransformer do
 
       before do
         allow(MableEtl::Transformers::TransformerResult).to receive(:new).with(
-          message: "Transformer success: #{params[:mable_etl_data]} mapped to a hash", mable_etl_data: mapped_result
+          message: 'Transformer success: data mapped to a hash', mable_etl_data: mapped_result
         ).and_return(transform_result)
       end
 

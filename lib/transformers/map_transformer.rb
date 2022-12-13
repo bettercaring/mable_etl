@@ -21,7 +21,7 @@ module MableEtl
       def transform
         result = @data.map(&:to_h)
 
-        TransformerResult.new(message: "Transformer success: #{@data} mapped to a hash",
+        TransformerResult.new(message: 'Transformer success: data mapped to a hash',
                               mable_etl_data: result)
       end
     end

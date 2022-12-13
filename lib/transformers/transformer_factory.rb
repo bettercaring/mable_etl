@@ -4,6 +4,7 @@ require 'mable_etl/errors/transformers/transformer_factory'
 require_relative '../contracts/transformer_factory_contract'
 require 'transformers/map_transformer'
 require 'transformers/csv_object_transformer'
+require 'transformers/downcase_transformer'
 
 # TransformerFactory.for(params).transform
 # The object contains the class, data and config for loader

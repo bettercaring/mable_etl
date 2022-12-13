@@ -14,6 +14,7 @@ module MableEtl
 
     def initialize(params)
       @params = params
+      @logger = params[:logger]
     end
 
     def process
@@ -28,18 +29,27 @@ module MableEtl
       load
     end
 
+    private
+
+    attr_reader :logger
+
     def extract
       result = MableEtl::Extractors::ExtractorFactory.for(params).extract
 
       @params = params.merge({ mable_etl_file_path: result.mable_etl_file_path })
 
-      result
+      log_result(result)
     end
 
     def transform
       @params[:transformer_types].each do |transformer_type|
         @params = params.merge({ transformer_type: transformer_type })
         @result = MableEtl::Transformers::TransformerFactory.for(params).transform
+
+        log_result(@result)
+
+        break unless @result.success?
+
         @params = params.merge({ mable_etl_data: @result.mable_etl_data })
       end
 
@@ -48,6 +58,15 @@ module MableEtl
 
     def load
       @load ||= MableEtl::Loaders::LoaderFactory.for(params).load
+    end
+
+    def log_result(result)
+      if result.success?
+        logger.info(result.message)
+      else
+        logger.error(result.message)
+      end
+      result
     end
   end
 end
