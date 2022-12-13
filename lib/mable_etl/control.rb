@@ -16,14 +16,10 @@ module MableEtl
     end
 
     def process
-      result = log_result(extract)
+      result = extract
       return result unless result.success?
 
-      result = transform do |transform_res|
-        transform_result = log_result(transform_res)
-        break transform_result unless transform_result.success?
-      end
-
+      result = transform
       return result unless result.success?
 
       File.delete(params[:mable_etl_file_path]) unless load.nil?
@@ -40,7 +36,7 @@ module MableEtl
 
       @params = params.merge({ mable_etl_file_path: result.mable_etl_file_path })
 
-      result
+      log_result(result)
     end
 
     def transform
@@ -48,7 +44,9 @@ module MableEtl
         @params = params.merge({ transformer_type: transformer_type })
         @result = MableEtl::Transformers::TransformerFactory.for(params).transform
 
-        break @result unless @result.success?
+        log_result(@result)
+
+        break unless @result.success?
 
         @params = params.merge({ mable_etl_data: @result.mable_etl_data })
       end

@@ -23,8 +23,9 @@ RSpec.describe MableEtl::Control do
   let(:message) { 'Extract success: local file spec/fixtures/files/test.csv extracted to temp folder' }
 
   before do
-    allow(dummy_logger).to receive(:info).with(any_args)
-    allow(dummy_logger).to receive(:error).with(any_args)
+    allow(dummy_logger).to receive(:error)
+    allow(dummy_logger).to receive(:info)
+
     allow(MableEtl::Loaders::LoaderResult).to receive(:new).and_return(loader_result)
   end
 
@@ -35,47 +36,75 @@ RSpec.describe MableEtl::Control do
       end
     end
 
-    context 'extractor and transformer' do
+    describe 'logging' do
+      before do
+        allow(MableEtl::Extractors::ExtractorResult).to receive(:new).and_return(extract)
+        allow(MableEtl::Transformers::TransformerResult).to receive(:new).and_return(transform)
+
+        control.process
+      end
+
       let(:extract) do
-        instance_double(MableEtl::Extractors::ExtractorResult, success?: success, mable_etl_file_path: 'temp/test.csv',
+        instance_double(MableEtl::Extractors::ExtractorResult, success?: extract_success, mable_etl_file_path: 'temp/test.csv',
                                                                message: 'abc')
       end
 
       let(:transform) do
-        instance_double(MableEtl::Transformers::TransformerResult, success?: success, mable_etl_data: mable_etl_data,
+        instance_double(MableEtl::Transformers::TransformerResult, success?: transform_success, mable_etl_data: mable_etl_data,
                                                                    message: 'def')
       end
-      let(:success) { true }
+
       let(:mable_etl_data) do
         [{ 'name' => 'Mable', 'id' => '1' },
          { 'name' => 'better_caring', 'id' => '2' }]
       end
 
-      before do
-        allow(MableEtl::Extractors::ExtractorResult).to receive(:new).and_return(extract)
-        allow(MableEtl::Transformers::TransformerResult).to receive(:new).and_return(transform)
+      context 'when extract and transform successful' do
+        let(:extract_success) { true }
+        let(:transform_success) { true }
+
+        it 'should log info', :aggregate_failures do
+          expect(dummy_logger).to have_received(:info).with(extract.message)
+          expect(dummy_logger).to have_received(:info).with(transform.message).exactly(3).times
+        end
       end
 
-      context 'when it is successful' do
-        it 'should receive info' do
-          dummy_logger = double
-          allow(dummy_logger).to receive(:info).and_return(extract.message, transform.message)
+      context 'when extract and transform unsuccessful' do
+        let(:extract_success) { false }
+        let(:transform_success) { false }
 
-          control.process
-          expect(dummy_logger.info).to eq(extract.message)
-          expect(dummy_logger.info).to eq(transform.message)
+        it 'should log extract error', :aggregate_failures do
+          expect(dummy_logger).to have_received(:error).with(extract.message)
         end
 
-        context 'when it is unsuccessful' do
-          let(:success) { false }
-          it 'it returns a logger error' do
-            dummy_logger = double
-            allow(dummy_logger).to receive(:error).and_return(extract.message, transform.message)
+        it 'should not log transform error', :aggregate_failures do
+          expect(dummy_logger).not_to have_received(:error).with(transform.message)
+        end
+      end
 
-            control.process
-            expect(dummy_logger.error).to eq(extract.message)
-            expect(dummy_logger.error).to eq(transform.message)
-          end
+      context 'when extract successful and transform unsuccessful' do
+        let(:extract_success) { true }
+        let(:transform_success) { false }
+
+        it 'should log extract info' do
+          expect(dummy_logger).to have_received(:info).with(extract.message)
+        end
+
+        it 'should log transform error' do
+          expect(dummy_logger).to have_received(:error).with(transform.message).once
+        end
+      end
+
+      context 'when extract unsuccessful and transform successful' do
+        let(:extract_success) { false }
+        let(:transform_success) { true }
+
+        it 'should log extract error', :aggregate_failures do
+          expect(dummy_logger).to have_received(:error).with(extract.message)
+        end
+
+        it 'should not log transform error' do
+          expect(dummy_logger).not_to have_received(:info).with(transform.message)
         end
       end
     end
