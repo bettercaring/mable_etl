@@ -19,8 +19,8 @@ module MableEtl
       result = log_result(extract)
       return result unless result.success?
 
-      result = transform do |transform_result|
-        transform_result = log_result(transform)
+      result = transform do |transform_res|
+        transform_result = log_result(transform_res)
         break transform_result unless transform_result.success?
       end
 
@@ -66,7 +66,6 @@ module MableEtl
       else
         logger.error(result.message)
       end
-
       result
     end
   end
