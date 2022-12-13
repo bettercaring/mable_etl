@@ -53,7 +53,7 @@ RSpec.describe MableEtl::Control do
           end
           it 'it returns a logger error' do
             control.process
-            expect(dummy_logger).to have_received(:error).with('abc')
+            expect(dummy_logger).to have_received(:error).with(extract.message)
           end
         end
       end
@@ -76,23 +76,17 @@ RSpec.describe MableEtl::Control do
         context 'when it is successful' do
           let(:message) { 'Transformer success: temp/test.csv transformed to CSV object' }
           it 'should receive info' do
-            # control.process
             control.send(:log_result, transform)
-            expect(dummy_logger).to have_received(:info).with(message)
+            expect(dummy_logger).to have_received(:info).with(transform.message)
           end
 
           context 'when it is unsuccessful' do
-            # let(:transform) { instance_double(MableEtl::Transformers::TransformerResult, success?: false, mable_etl_data: 'file_path', message: 'abc') }
             let(:message) { 'abc' }
             let(:success) { false }
-            # before do
-            #   allow(MableEtl::Transformers::TransformerResult).to receive(:new).and_return(transform)
-            # end
+
             it 'returns a logger error' do
-              # control.process
               control.send(:log_result, transform)
-              # binding.pry
-              expect(dummy_logger).to have_received(:error).with(message)
+              expect(dummy_logger).to have_received(:error).with(transform.message)
             end
           end
         end
