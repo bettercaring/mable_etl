@@ -38,7 +38,7 @@ RSpec.describe MableEtl::Transformers::MapTransformer do
   end
 
   describe '#transform' do
-    context 'is successful' do
+    context 'when successful' do
       let(:mapped_result) do
         [{ 'name' => 'Mable', 'id' => '1' },
          { 'name' => 'better_caring', 'id' => '2' }]

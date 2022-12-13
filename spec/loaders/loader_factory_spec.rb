@@ -28,7 +28,7 @@ RSpec.describe MableEtl::Loaders::LoaderFactory do
       expect(loader_factory).to eq(active_record_loader)
     end
 
-    context 'error' do
+    context 'with error' do
       before do
         params[:loader_type] = nil
       end

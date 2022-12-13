@@ -71,7 +71,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
 
     let(:loader_result) { instance_double(MableEtl::Loaders::LoaderResult) }
 
-    context 'is successful' do
+    context 'when successful' do
       before do
         allow(MableEtl::Loaders::LoaderResult).to receive(:new).with(
           message: 'Load success: 3 loaded and 2 exist.'
@@ -111,7 +111,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
       end
     end
 
-    context 'is unsuccessful' do
+    context 'when unsuccessful' do
       let(:mable_etl_data) do
         [{ id: 1, age: 'name', email: 'chicken@gmail.com' },
          { id: 1, age: 'gerald', email: 'chicken@gmail.com' },

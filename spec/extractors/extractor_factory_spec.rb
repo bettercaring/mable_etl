@@ -24,7 +24,7 @@ RSpec.describe MableEtl::Extractors::ExtractorFactory do
       expect(extractor_factory).to eq(local_extractor)
     end
 
-    context 'error' do
+    context 'with errors' do
       before do
         params[:extractor_type] = nil
       end
