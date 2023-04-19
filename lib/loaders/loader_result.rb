@@ -3,6 +3,8 @@
 module MableEtl
   class Loaders
     class LoaderResult
+      include LoggerHelper
+
       def initialize(message:, success: true)
         @success = success
         @message = message
@@ -11,6 +13,8 @@ module MableEtl
       def success?
         success
       end
+
+      private
 
       attr_reader :message, :success
     end

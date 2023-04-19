@@ -47,12 +47,12 @@ RSpec.describe MableEtl::Control do
 
       let(:extract) do
         instance_double(MableEtl::Extractors::ExtractorResult, success?: extract_success, mable_etl_file_path: 'temp/test.csv',
-                                                               message: 'abc')
+                                                               log: 'abc')
       end
 
       let(:transform) do
         instance_double(MableEtl::Transformers::TransformerResult, success?: transform_success, mable_etl_data: mable_etl_data,
-                                                                   message: 'def')
+                                                                   log: 'def')
       end
 
       let(:mable_etl_data) do
@@ -65,8 +65,8 @@ RSpec.describe MableEtl::Control do
         let(:transform_success) { true }
 
         it 'logs info', :aggregate_failures do
-          expect(dummy_logger).to have_received(:info).with(extract.message)
-          expect(dummy_logger).to have_received(:info).with(transform.message).exactly(3).times
+          expect(dummy_logger).to have_received(:info).with(extract.log)
+          expect(dummy_logger).to have_received(:info).with(transform.log).exactly(3).times
         end
       end
 
@@ -75,11 +75,11 @@ RSpec.describe MableEtl::Control do
         let(:transform_success) { false }
 
         it 'logs extract error', :aggregate_failures do
-          expect(dummy_logger).to have_received(:error).with(extract.message)
+          expect(dummy_logger).to have_received(:error).with(extract.log)
         end
 
         it 'does not log transform error', :aggregate_failures do
-          expect(dummy_logger).not_to have_received(:error).with(transform.message)
+          expect(dummy_logger).not_to have_received(:error).with(transform.log)
         end
       end
 
@@ -88,11 +88,11 @@ RSpec.describe MableEtl::Control do
         let(:transform_success) { false }
 
         it 'logs extract info' do
-          expect(dummy_logger).to have_received(:info).with(extract.message)
+          expect(dummy_logger).to have_received(:info).with(extract.log)
         end
 
         it 'logs transform error' do
-          expect(dummy_logger).to have_received(:error).with(transform.message).once
+          expect(dummy_logger).to have_received(:error).with(transform.log).once
         end
       end
 
@@ -101,11 +101,11 @@ RSpec.describe MableEtl::Control do
         let(:transform_success) { true }
 
         it 'logs extract error', :aggregate_failures do
-          expect(dummy_logger).to have_received(:error).with(extract.message)
+          expect(dummy_logger).to have_received(:error).with(extract.log)
         end
 
         it 'does not log transform error' do
-          expect(dummy_logger).not_to have_received(:info).with(transform.message)
+          expect(dummy_logger).not_to have_received(:info).with(transform.log)
         end
       end
     end

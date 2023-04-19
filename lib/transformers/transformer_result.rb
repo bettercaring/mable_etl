@@ -3,6 +3,8 @@
 module MableEtl
   class Transformers
     class TransformerResult
+      include LoggerHelper
+
       def initialize(message:, mable_etl_data:, success: true)
         @success = success
         @message = message
@@ -13,7 +15,11 @@ module MableEtl
         success
       end
 
-      attr_reader :message, :mable_etl_data, :success
+      attr_reader :mable_etl_data
+
+      private
+
+      attr_reader :message, :success
     end
   end
 end

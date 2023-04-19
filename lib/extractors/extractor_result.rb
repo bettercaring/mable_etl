@@ -3,6 +3,8 @@
 module MableEtl
   class Extractors
     class ExtractorResult
+      include MableEtl::LoggerHelper
+
       def initialize(message:, mable_etl_file_path:, success: true)
         @success = success
         @message = message
@@ -13,7 +15,11 @@ module MableEtl
         success
       end
 
-      attr_reader :message, :mable_etl_file_path, :success
+      attr_reader :mable_etl_file_path
+
+      private
+
+      attr_reader :message, :success
     end
   end
 end

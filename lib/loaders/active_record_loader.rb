@@ -19,21 +19,24 @@ module MableEtl
         @data = params[:mable_etl_data]
         @silence_log_config = params[:silence_log]
         @logger = params[:logger]
+        @inserted_count = 0
       end
 
       def load
-        slience_log do
-          ActiveRecord::Base.transaction do
-            @active_record_model_name.insert_all(@data)
+        silence_log do
+          @data.in_groups_of(10_000) do |group|
+            @inserted_count += @active_record_model_name.insert_all(group.compact).count
           end
         end
 
-        LoaderResult.new(message: "Load success: #{@data.count} loaded and #{records} exist.")
+        LoaderResult.new(message: "Load success: #{inserted_count}/#{@data.count} records inserted.")
       end
 
       private
 
-      def slience_log(&block)
+      attr_reader :inserted_count
+
+      def silence_log(&block)
         if @silence_log_config
           @logger.silence do
             block.call
@@ -41,18 +44,6 @@ module MableEtl
         else
           yield
         end
-      end
-
-      def records
-        @records ||= @active_record_model_name.where(query).count
-      end
-
-      def query
-        @data.map { |record_data| record_data_query(record_data) }.join(' OR ')
-      end
-
-      def record_data_query(record)
-        record.map { |name, value| "#{name} = '#{value}'" }.join(' AND ')
       end
     end
   end
