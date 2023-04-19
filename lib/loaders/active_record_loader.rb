@@ -23,7 +23,7 @@ module MableEtl
       end
 
       def load
-        slience_log do
+        silence_log do
           @data.in_groups_of(10_000) do |group|
             @inserted_count += @active_record_model_name.insert_all(group.compact).count
           end
@@ -36,7 +36,7 @@ module MableEtl
 
       attr_reader :inserted_count
 
-      def slience_log(&block)
+      def silence_log(&block)
         if @silence_log_config
           @logger.silence do
             block.call
