@@ -74,7 +74,7 @@ RSpec.describe MableEtl::Loaders::ActiveRecordLoader do
     context 'when successful' do
       before do
         allow(MableEtl::Loaders::LoaderResult).to receive(:new).with(
-          message: 'Load success: 3 loaded and 2 exist.'
+          message: 'Load success: 0/3 records inserted.'
         ).and_return(loader_result)
 
         allow(logger).to receive(:silence).and_call_original

@@ -15,7 +15,11 @@ module MableEtl
         success
       end
 
-      attr_reader :message, :mable_etl_file_path, :success
+      attr_reader :mable_etl_file_path
+
+      private
+
+      attr_reader :message, :success
     end
   end
 end

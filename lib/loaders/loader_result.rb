@@ -14,6 +14,8 @@ module MableEtl
         success
       end
 
+      private
+
       attr_reader :message, :success
     end
   end
