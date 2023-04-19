@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'helpers/logger_helper'
 require 'extractors/local_extractor'
 require 'extractors/S3_extractor'
 require 'extractors/extractor_factory'
@@ -62,9 +63,9 @@ module MableEtl
 
     def log_result(result)
       if result.success?
-        logger.info(result.message)
+        logger.info(result.log)
       else
-        logger.error(result.message)
+        logger.error(result.log)
       end
       result
     end

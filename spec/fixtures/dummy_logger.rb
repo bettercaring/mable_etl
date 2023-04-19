@@ -2,10 +2,10 @@
 
 class DummyLogger
   def info(message)
-    message
+    puts message
   end
 
   def error(message)
-    message
+    puts message
   end
 end

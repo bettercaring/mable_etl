@@ -3,6 +3,8 @@
 module MableEtl
   class Loaders
     class LoaderResult
+      include LoggerHelper
+
       def initialize(message:, success: true)
         @success = success
         @message = message
